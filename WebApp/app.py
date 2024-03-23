@@ -1,9 +1,8 @@
-from distributed.http.utils import redirect
 from flask import Flask, render_template, request, url_for
 import logging
+import csv
 
 app = Flask(__name__, static_folder='static')
-
 
 @app.route('/')
 def login():
@@ -33,7 +32,15 @@ def CreateNewUser():
 
 @app.route('/ActiveUsers')
 def ActiveUsers():
-    return render_template("ActiveUsers.html")
+    users = []
+
+    # Read user details from CSV file
+    with open('Database/activeUsers.csv', 'r', newline='') as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            users.append(row)
+
+    return render_template('ActiveUsers.html', users=users)
 
 
 @app.route('/homepage')
