@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Logs - Smart Door Lock System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #B5C0D0;
+            color: #333;
+            min-height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .container {
+			background-color: rgba(255, 255, 255, 0.65);
+            border-radius: 20px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
+            padding: 20px;
+            width: 1350px;
+            height: 580px;
+            margin: 50px;
+            position: relative;
+        }
+		
+		.container:before {
+            content: "";
+            position: absolute;
+            height: 1700px;
+            width: 1400px;
+            top: -10%;
+            right: -40%;
+            transform: translateY(-50%);
+            background-image: linear-gradient(-45deg, #CCD3CA 0%, #88AB8E 100%);
+            transition: 1.8s ease-in-out;
+            border-radius: 50%;
+            z-index: -1;
+        }
+        
+        h1 {
+            margin-top: 50px;
+            margin-left: 50px;
+        }
+        
+        .user-list {
+            list-style: none;
+            padding: 0;
+            margin-left: 100px;
+			width: 1100px;
+        }
+
+        .user-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+			border-bottom: 2px solid #DDD;
+            padding: 10px 0;
+            margin-left: 30px;
+        }
+
+
+        .user-pic {
+            width: 80px;
+            height: auto;
+            border-radius: 50%;
+            margin-left: 250px;
+        }
+
+        .user-logs {
+            flex-grow: 1;
+            margin-left: 250px;
+        }
+
+        .user-log-item {
+            margin-bottom: 5px;
+        }
+
+        /* Next page button style */
+        .next-page-button {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background-color: #B5C0D0;
+            color: #0d0c0d;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+			margin-right: 20px;
+			margin-bottom: 15px;
+        }
+
+        .next-page-button:hover {
+            background-color: #EED3D9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Unauthorized Access</h1>
+        <ul class="user-list">
+            <li class="user-item">
+                <img src="{{ url_for('static', filename='userr.png') }}" alt="Image 1" class="user-pic">
+                <div class="user-logs">
+                    <p class="user-log-item"><b>Time:</b><span> 2021/2/3 5.9pm</span></p>
+                    <p class="user-log-item"><b>Attempts:</b><span> 1</span></p>
+                    <p class="user-log-item"><b>Email Status:</b><span> Sent</span></p>
+                </div>
+            </li>
+            <li class="user-item">
+                <img src="{{ url_for('static', filename='userr.png') }}" alt="Image 1" class="user-pic">
+                <div class="user-logs">
+                    <p class="user-log-item"><b>Time:</b><span> 2021/2/3 5.9pm</span></p>
+                    <p class="user-log-item"><b>Attempts:</b><span> 1</span></p>
+                    <p class="user-log-item"><b>Email Status:</b><span> Sent</span></p>
+                </div>
+            </li>
+            <li class="user-item">
+                <img src="{{ url_for('static', filename='userr.png') }}" alt="Image 1" class="user-pic">
+                <div class="user-logs">
+                    <p class="user-log-item"><b>Time:</b><span> 2021/2/3 5.9pm</span></p>
+                    <p class="user-log-item"><b>Attempts:</b><span> 1</span></p>
+                    <p class="user-log-item"><b>Email Status:</b><span> Sent</span></p>
+                </div>
+            </li>
+        </ul>
+        <button class="next-page-button">Next Page</button>
+    </div>
+</body>
+</html>
