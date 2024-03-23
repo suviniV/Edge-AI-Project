@@ -457,15 +457,16 @@
 			<div class="signin-signup">
 					<div class="login">
 						<h2>Sign In</h2>
+						<form action="/signin" method="POST">
 						<div class="input-field">
 							<span class="fas fa-user"></span>
-							<input type="text" placeholder="Username" />
+							<input type="text" placeholder="Username" name="username" required/>
 						</div>
 						<div class="input-field">
 							<span class="fas fa-lock"></span>
-							<input type="password" placeholder="Password" />
+							<input type="password" placeholder="Password" name="password" required/>
 						</div>
-							<button onclick="window.location.href='/homepage'" class="btn solid">Sign In</button>
+							<input type="submit" value="Sign In" class="btn solid">
 					</div>
 			</div>
 		</div>
