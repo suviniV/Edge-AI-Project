@@ -5,6 +5,18 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
+import RPi.GPIO as GPIO
+import time
+
+# Define pin numbers
+light_sensor_pin = 18  # GPIO pin for the light sensor
+led_pin = 17  # GPIO pin for the LED
+
+# Setup GPIO
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(light_sensor_pin, GPIO.IN)
+GPIO.setup(led_pin, GPIO.OUT)
 
 # Face detection function using haar cascade model
 def face_detection(test_img):
@@ -39,3 +51,23 @@ def send_email_alert(image):
     server.sendmail(sender_email, receiver_email, msg.as_string())
     # Close the SMTP server connection
     server.quit()
+
+
+def light_Sensor():
+    """
+    Function to determine if it's dark based on light sensor reading.
+    Adjust the threshold value according to ambient light conditions.
+    """
+    light_value = GPIO.input(light_sensor_pin)
+    return light_value == GPIO.LOW
+
+try:
+    while True:
+        if light_Sensor():
+            GPIO.output(led_pin, GPIO.HIGH)  # Turn on the LED
+        else:
+            GPIO.output(led_pin, GPIO.LOW)   # Turn off the LED
+        time.sleep(0.1)  # Delay for stability
+
+except KeyboardInterrupt:
+    GPIO.cleanup()  # Clean up GPIO on Ctrl+C exit
