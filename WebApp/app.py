@@ -53,19 +53,35 @@ def user_management():
     return render_template("UserManagement.html")
 
 
-@app.route('/door-status')
-def door_status():
-    return render_template("door-status.html")
+# @app.route('/door-status')
+# def door_status():
+#     return render_template("door-status.html")
 
 
 @app.route('/AccessLogs')
 def AccessLogs():
-    return render_template("AccessLogs.html")
+    logs = []
+
+    # Read user details from CSV file
+    with open('Database/accessLogs.csv', 'r', newline='') as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            logs.append(row)
+
+    return render_template("AccessLogs.html", logs=logs)
 
 
 @app.route('/UnauthorizedAccess')
 def UnauthorizedAccess():
-    return render_template("UnauthorizedAccess.html")
+    UnauthorizedAccesslogs = []
+
+    # Read user details from CSV file
+    with open('Database/unathorizedAccess.csv', 'r', newline='') as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            UnauthorizedAccesslogs.append(row)
+
+    return render_template("UnauthorizedAccess.html", UnauthorizedAccesslogs=UnauthorizedAccesslogs)
 
 
 if __name__ == '__main__':

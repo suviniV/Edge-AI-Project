@@ -10,59 +10,66 @@
             font-family: 'Montserrat', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #B5C0D0;
+            background-color: #B5C0D0; /* Use the same background color as the homepage */
             color: #333;
-            min-height: 100vh;
-            overflow: hidden;
+            min-height: 100vh; /* Ensure full viewport height */
             display: flex;
             justify-content: center;
             align-items: flex-start;
         }
 
+        .container:before {
+			content: "";
+			position: absolute;
+			height: 2000px;
+			width: 2000px;
+			top: -10%;
+			right: 48%;
+			transform: translateY(-50%);
+			background-image: linear-gradient(-45deg, #CCD3CA 0%, #88AB8E 100%);
+			transition: 1.8s ease-in-out;
+			border-radius: 50%;
+			z-index: 1; /* Set a lower z-index value to send it behind the container */
+		}
+
         .container {
-			background-color: rgba(255, 255, 255, 0.65);
-            border-radius: 20px;
-            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
-            padding: 20px;
-            width: 1350px;
-            height: 580px;
-            margin: 50px;
-            position: relative;
+			position: relative;
+			width: 100%;
+			background-color: #B5C0D0;
+			min-height: 100vh;
+		    z-index: 2; /* Set a lower z-index value to send it behind the container */
+		}
+
+        .title {
+			margin-bottom: 10px;
+			position: absolute;
+			top: 80px;
+			left: 80px; /* Adjust as needed */
+			z-index: 1;
+			font-weight: 800;
+			line-height: 1;
+			font-size: 2.5rem;
+			color: #666262;
+			z-index: 2;
         }
-		
-		.container:before {
-            content: "";
-            position: absolute;
-            height: 1700px;
-            width: 1400px;
-            top: -10%;
-            right: -40%;
-            transform: translateY(-50%);
-            background-image: linear-gradient(-45deg, #CCD3CA 0%, #88AB8E 100%);
-            transition: 1.8s ease-in-out;
-            border-radius: 50%;
-            z-index: -1;
-        }
-        
-        h1 {
-            margin-top: 50px;
-            margin-left: 50px;
-        }
-        
+
         .user-list {
             list-style: none;
             padding: 0;
-            margin-left: 100px;
+            margin-left: 180px;
 			width: 1100px;
+			z-index: 2; /* Set a lower z-index value to send it behind the container */
+			margin-top: 200px;
         }
 
         .user-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-			border-bottom: 2px solid #DDD;
+			border-bottom: 2px solid #DDD; /* Increase border width and adjust color */
             padding: 10px 0;
             margin-left: 30px;
+			z-index: 3; /* Set a lower z-index value to send it behind the container */
         }
 
         .user-name {
@@ -71,6 +78,7 @@
             margin-left: 100px;
             width: 200px;
 			font-size: 20px;
+			z-index: 2; /* Set a lower z-index value to send it behind the container */
         }
 
         .user-pic {
@@ -78,76 +86,40 @@
             height: auto;
             border-radius: 50%;
             margin-left: 200px;
+			z-index: 2; /* Set a lower z-index value to send it behind the container */
         }
 
         .user-logs {
             flex-grow: 1;
             margin-left: 200px;
+			z-index: 2; /* Set a lower z-index value to send it behind the container */
         }
 
         .user-log-item {
             margin-bottom: 5px;
+			z-index: 2; /* Set a lower z-index value to send it behind the container */
         }
 
-        /* Next page button style */
-        .next-page-button {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            background-color: #B5C0D0;
-            color: #0d0c0d;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            cursor: pointer;
-			margin-right: 20px;
-			margin-bottom: 15px;
-        }
-
-        .next-page-button:hover {
-            background-color: #EED3D9;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>User Access Logs</h1>
+        <h1 class="title">User Access Logs</h1>
         <ul class="user-list">
+            {% for user in logs %}
             <li class="user-item">
                 <div class="user-name">
-                    <span class="user">John Doe</span>
+                    <span class="user">{{ user['name'] }}</span>
                 </div>
-                <img src="{{ url_for('static', filename='userr.png') }}" class="user-pic">
+                <img src="{{ url_for('static', filename='userr.png') }}" alt="{{ user['name'] }}" class="user-pic">
                 <div class="user-logs">
-                    <p class="user-log-item"><b>Name:</b><span> Alice Johnson</span></p>
-                    <p class="user-log-item"><b>Time:</b><span> 2021/2/3 5.9pm</span></p>
-                    <p class="user-log-item"><b>Status:</b><span> Successful</span></p>
+                    <p class="user-log-item"><b>Name: </b><span>{{ user['name'] }}</span></p>
+                    <p class="user-log-item"><b>Time: </b><span>{{ user['time'] }}</span></p>
+                    <p class="user-log-item"><b>Status: </b><span>{{ user['status'] }}</span></p>
                 </div>
             </li>
-            <li class="user-item">
-                <div class="user-name">
-                    <span class="user">Johnhjj Doe</span>
-                </div>
-                <img src="{{ url_for('static', filename='userr.png') }}" class="user-pic">
-                <div class="user-logs">
-                    <p class="user-log-item"><b>Name:</b><span> Alice Johnson</span></p>
-                    <p class="user-log-item"><b>Time:</b><span> 2021/2/3 5.9pm</span></p>
-                    <p class="user-log-item"><b>Status:</b><span> Successful</span></p>
-                </div>
-            </li>
-            <li class="user-item">
-                <div class="user-name">
-                    <span class="user">Johhfdsdfvbnkn Doe</span>
-                </div>
-                <img src="{{ url_for('static', filename='userr.png') }}" class="user-pic">
-                <div class="user-logs">
-                    <p class="user-log-item"><b>Name:</b><span> Alice Johnson</span></p>
-                    <p class="user-log-item"><b>Time:</b><span> 2021/2/3 5.9pm</span></p>
-                    <p class="user-log-item"><b>Status:</b><span> Successful</span></p>
-                </div>
-            </li>
+            {% endfor %}
         </ul>
-        <button class="next-page-button">Next Page</button>
     </div>
 </body>
 </html>
