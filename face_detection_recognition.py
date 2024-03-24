@@ -18,6 +18,7 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(light_sensor_pin, GPIO.IN)
 GPIO.setup(led_pin, GPIO.OUT)
 
+
 # Face detection function using haar cascade model
 def face_detection(test_img):
     # converting color image to grayscale image
@@ -27,6 +28,38 @@ def face_detection(test_img):
     # Multiscale used to return the rectangle
     faces = face_haar_cascade.detectMultiScale(gray_img, scaleFactor=1.32, minNeighbors=5)
     return faces, gray_img
+
+
+# Function to generate the labels for the training dataset which is passed as the parameter directory
+# returns part of gray_img which is face along with its label/ID
+def labels_for_training_data(directory):
+    faces = []
+    faceID = []
+
+    for path, subdirnames, filenames in os.walk(directory):
+        for filename in filenames:
+            if filename.startswith("."):
+                # Skipping files that start with .
+                print("Skipping system file")
+                continue
+            id = os.path.basename(path)  # fetching subdirectory names
+            img_path = os.path.join(path, filename)  # fetching image path
+            print("img_path:", img_path)
+            print("id:", id)
+            test_img = cv2.imread(img_path)  # loading each image one by one
+            if test_img is None:
+                print("Image not loaded properly")
+                continue
+            faces_rect, gray_img = face_detection(
+                test_img)  # Calling faceDetection function to return faces detected in particular image
+            if len(faces_rect) != 1:
+                continue  # Since we are assuming only single person images are being fed to classifier
+            (x, y, w, h) = faces_rect[0]
+            roi_gray = gray_img[y:y + w, x:x + h]  # cropping region of interest i.e. face area from grayscale image
+            faces.append(roi_gray)
+            faceID.append(int(id))
+    return faces, faceID
+
 
 def send_email_alert(image):
     # Email configuration
@@ -61,12 +94,13 @@ def light_Sensor():
     light_value = GPIO.input(light_sensor_pin)
     return light_value == GPIO.LOW
 
+
 try:
     while True:
         if light_Sensor():
             GPIO.output(led_pin, GPIO.HIGH)  # Turn on the LED
         else:
-            GPIO.output(led_pin, GPIO.LOW)   # Turn off the LED
+            GPIO.output(led_pin, GPIO.LOW)  # Turn off the LED
         time.sleep(0.1)  # Delay for stability
 
 except KeyboardInterrupt:
