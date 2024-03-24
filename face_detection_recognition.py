@@ -61,6 +61,13 @@ def labels_for_training_data(directory):
     return faces, faceID
 
 
+# Function to train haar classifier and takes faces,faceID returned by previous function as its arguments
+def train_classifier(faces, faceID):
+    face_recognizer = cv2.face.LBPHFaceRecognizer_create()
+    face_recognizer.train(faces, np.array(faceID))
+    return face_recognizer
+
+
 def send_email_alert(image):
     # Email configuration
     sender_email = 'akhabeer02@gmail.com'
