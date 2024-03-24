@@ -23,7 +23,7 @@ def signin():
     else:
         # Invalid credentials, render login page with error message
         error_message = 'Invalid username or password. Please try again.'
-        return render_template('login.html', error_message=error_message)
+        return render_template('login.html', error_message=error_message, show_popup=True)
 
 @app.route('/CreateNewUser')
 def CreateNewUser():

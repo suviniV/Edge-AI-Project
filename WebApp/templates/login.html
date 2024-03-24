@@ -449,6 +449,13 @@
 		}
 
 	</style>
+	<script>
+        {% if show_popup %}
+        window.onload = function() {
+            alert('{{ error_message }}');
+        };
+        {% endif %}
+    </script>
 </head>
 
 <body>
