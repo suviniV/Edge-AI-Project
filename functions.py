@@ -5,18 +5,17 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
-import RPi.GPIO as GPIO
 import time
+from gpiozero import LightSensor, LED
+from signal import pause
 
 # Define pin numbers
 light_sensor_pin = 18  # GPIO pin for the light sensor
-led_pin = 17  # GPIO pin for the LED
+lED_pin = 17  # GPIO pin for the LED
 
-# Setup GPIO
-GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(light_sensor_pin, GPIO.IN)
-GPIO.setup(led_pin, GPIO.OUT)
+# Initialize light sensor and LED
+light_sensor = LightSensor(light_sensor_pin)
+led = LED(lED_pin)
 
 
 # Face detection function using haar cascade model
@@ -111,22 +110,21 @@ def send_email_alert(image):
     server.quit()
 
 
-def light_Sensor():
+
+def is_dark():
     """
     Function to determine if it's dark based on light sensor reading.
-    Adjust the threshold value according to ambient light conditions.
     """
-    light_value = GPIO.input(light_sensor_pin)
-    return light_value == GPIO.LOW
+    return light_sensor.value<0.5 # Invert the logic to represent darkness
 
+def turn_on_led():
+    led.on()
 
-try:
-    while True:
-        if light_Sensor():
-            GPIO.output(led_pin, GPIO.HIGH)  # Turn on the LED
-        else:
-            GPIO.output(led_pin, GPIO.LOW)  # Turn off the LED
-        time.sleep(0.1)  # Delay for stability
+def turn_off_led():
+    led.off()
 
-except KeyboardInterrupt:
-    GPIO.cleanup()  # Clean up GPIO on Ctrl+C exit
+# When light is detected, turn off the LED
+light_sensor.when_dark = turn_on_led
+light_sensor.when_light = turn_off_led
+
+pause()  # Pause the script indefinitely to keep the program running
