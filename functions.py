@@ -79,6 +79,13 @@ def put_text(test_img, text, x, y):
     cv2.putText(test_img, text, (x, y), cv2.FONT_HERSHEY_DUPLEX, 2, (255, 0, 0), 4)
 
 
+# Function to save the training images into a yml file
+def train_and_save_classifier(training_images_path, output_file_path):
+    faces, faceID = labels_for_training_data(training_images_path)
+    face_recognizer = train_classifier(faces, faceID)
+    face_recognizer.write(output_file_path)
+
+
 def send_email_alert(image):
     # Email configuration
     sender_email = 'akhabeer02@gmail.com'
