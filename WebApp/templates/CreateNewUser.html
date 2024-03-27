@@ -489,54 +489,143 @@
     <div class="container">
         <div class="forms-container">
             <div class="signin-signup">
-                    <div class="login">
-						<div class="login-header">
-						<p>Upload New User Picture</p></div>  
-						<div class="drag-area">
-							<div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
-							<header>Drag & Drop to Upload File</header>
-							<span>OR</span>
-							<button>Browse File</button>
-							<input type="file" hidden>
-						</div>
-						  <script src="{{ url_for('static', filename='script.js') }}"></script>
-
+                <div class="login">
+                    <div class="login-header">
+                        <p>Upload New User Picture</p>
                     </div>
+                    <div class="drag-area">
+                        <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                        <header>Drag & Drop to Upload File</header>
+                        <span>OR</span>
+                        <button onclick="openFile(event)">Browse File</button>
+                        <input type="file" name="file" hidden onchange="showFile()">
+                    </div>
+                </div>
             </div>
         </div>
 
-		<div class="panels-container">
-			<div class="panel left-panel">
-				<div class="content">
-					<div class="heading-wrapper">
-						<h3>Create New User</h3>
-					</div>
-					<div class="paragraph-wrapper">
-						<div class="input-field">
-							<span class="fa fa-user"></span>
-							<label for="full-name">Name:</label>
-							<input type="text" id="full-name" placeholder="Enter Full Name" />
-						</div>
-						<div class="input-field">
-							<span class="fa fa-envelope"></span>
-							<label for="email">Email:</label>
-							<input type="email" id="email" placeholder="Enter Your Email" />
-						</div>
-						<div class="button-container">
-							<input type="submit" value="Submit All" class="btn solid" />
-							<input type="reset" value="Clear All" class="btn solid" />
-						</div>
-					</div>
-				</div>
-				<div class="image-container-background">
-					<!-- Removed image -->
-				</div>
-			</div>
-		</div>
-
-
+        <div class="panels-container">
+            <div class="panel left-panel">
+                <div class="content">
+                    <div class="heading-wrapper">
+                        <h3>Create New User</h3>
+                    </div>
+                    <div class="paragraph-wrapper">
+                        <form id="user-form" action="/add_user" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+                            <div class="input-field">
+                                <span class="fa fa-user"></span>
+                                <label for="full-name">Name:</label>
+                                <input type="text" id="full-name" name="full-name" placeholder="Enter Full Name" required />
+                            </div>
+                            <div class="input-field">
+                                <span class="fa fa-envelope"></span>
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" placeholder="Enter Your Email" required />
+                            </div>
+                            <div class="button-container">
+                                <input type="submit" value="Submit All" class="btn solid" />
+                                <input type="button" value="Clear All" class="btn solid" onclick="clearForm()" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="image-container-background">
+                    <!-- Removed image -->
+                </div>
+            </div>
+        </div>
     </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        function clearForm() {
+            document.getElementById("user-form").reset();
+            // Reset the image display
+            let dropArea = document.querySelector(".drag-area");
+            dropArea.innerHTML = `
+                <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                <header>Drag & Drop to Upload File</header>
+                <span>OR</span>
+                <button onclick="openFile(event)">Browse File</button>
+                <input type="file" name="file" hidden onchange="showFile()">
+            `;
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("user-form").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the default form submission behavior
+
+            var name = document.getElementById("full-name").value;
+            var email = document.getElementById("email").value;
+            var dropArea = document.querySelector(".drag-area");
+            var imgTag = dropArea.querySelector("img");
+
+            if (name === "" || email === "" || imgTag === null) {
+                alert("All fields are required");
+                return false; // Prevent form submission
+            }
+
+            // If all fields are filled, submit the form asynchronously
+            var formData = new FormData(document.getElementById("user-form"));
+
+            fetch("/add_user", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                // Handle successful response
+                // For example, redirect to another page
+                alert("User successfully added");
+                window.location.href = "/ActiveUsers";
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                // Handle error if needed
+            });
+        });
+    });
+
+
+
+
+        function openFile(event) {
+            event.preventDefault();
+            event.target.nextElementSibling.click();
+        }
+
+        function showFile() {
+            let fileInput = document.querySelector("input[type='file']");
+            let file = fileInput.files[0];
+            let dropArea = document.querySelector(".drag-area");
+
+            let fileType = file.type;
+            let validExtensions = ["image/jpeg", "image/jpg", "image/png"];
+
+            if (validExtensions.includes(fileType)) {
+                let fileReader = new FileReader();
+                fileReader.onload = () => {
+                    let fileURL = fileReader.result;
+                    let imgTag = `<img src="${fileURL}" alt="image">`;
+                    dropArea.innerHTML = imgTag;
+                }
+                fileReader.readAsDataURL(file);
+            } else {
+                alert("This is not an Image File!");
+                dropArea.innerHTML = `
+                    <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                    <header>Drag & Drop to Upload File</header>
+                    <span>OR</span>
+                    <button onclick="openFile(event)">Browse File</button>
+                    <input type="file" name="file" hidden onchange="showFile()">
+                `;
+            }
+        }
+    </script>
 </body>
+
 
 </html>
 

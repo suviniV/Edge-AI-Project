@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, url_for, redirect
-
 import logging
 import csv
+import os
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__, static_folder='static')
 
@@ -26,10 +27,12 @@ def signin():
         error_message = 'Invalid username or password. Please try again.'
         return render_template('login.html', error_message=error_message, show_popup=True)
 
+UPLOAD_FOLDER = 'static/uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 @app.route('/CreateNewUser')
 def CreateNewUser():
     return render_template("CreateNewUser.html")
-
 
 @app.route('/ActiveUsers')
 def ActiveUsers():
@@ -43,6 +46,22 @@ def ActiveUsers():
 
     return render_template('ActiveUsers.html', users=users)
 
+@app.route('/add_user', methods=['POST'])
+def add_user():
+    name = request.form.get('full-name')
+    email = request.form.get('email')
+
+    # Validate form data
+    if not name or not email:
+        return "Error: All fields are required"
+
+    # Add user data to CSV file
+    with open('Database/activeUsers.csv', 'a', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow([name, email])
+
+    return redirect(url_for('ActiveUsers'))
+
 
 @app.route('/homepage')
 def home():
@@ -55,14 +74,13 @@ def home():
 
 
 def read_door_status_from_csv():
-    door_status = "locked"
 
-    # with open('Database/doorstatus.csv', 'r') as file:
-    #     reader = csv.reader(file)
-    #
-    #     for row in reader:
-    #         door_status = row[0]
-    #         break
+    with open('Database/doorStatus.csv', 'r', encoding='utf-8-sig') as file:
+        reader = csv.reader(file)
+
+        for row in reader:
+            door_status = row[0]
+            break
 
     return door_status
 
