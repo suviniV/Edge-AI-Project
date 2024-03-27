@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request, url_for, redirect
+
 import logging
 import csv
 
@@ -19,7 +20,7 @@ def signin():
 
     if username == VALID_USERNAME and password == VALID_PASSWORD:
         # Valid credentials, redirect to homepage
-        return render_template('homepage.html', error_message=None)
+        return redirect(url_for('home'))
     else:
         # Invalid credentials, render login page with error message
         error_message = 'Invalid username or password. Please try again.'
@@ -45,17 +46,31 @@ def ActiveUsers():
 
 @app.route('/homepage')
 def home():
-    return render_template("homepage.html")
+    # Read the door status from the CSV file
+    door_status = read_door_status_from_csv()
+
+    # Pass the door status to the HTML template
+    return render_template("homepage.html", door_status=door_status)
+
+
+
+def read_door_status_from_csv():
+    door_status = "locked"
+
+    # with open('Database/doorstatus.csv', 'r') as file:
+    #     reader = csv.reader(file)
+    #
+    #     for row in reader:
+    #         door_status = row[0]
+    #         break
+
+    return door_status
 
 
 @app.route('/user-management')
 def user_management():
     return render_template("UserManagement.html")
 
-
-# @app.route('/door-status')
-# def door_status():
-#     return render_template("door-status.html")
 
 
 @app.route('/AccessLogs')

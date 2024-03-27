@@ -38,20 +38,18 @@
 			min-height: 100vh;
 			overflow: hidden;
 		    z-index: 2; /* Set a lower z-index value to send it behind the container */
-
 		}
 
         .title {
-            margin-bottom: 10px;
+            margin-bottom: 50px;
             position: absolute;
-            top: 80px;
+            top: 100px;
             left: 80px; /* Adjust as needed */
             z-index: 1;
-            font-weight: 800;
+             font-weight: 800;
             line-height: 1;
             font-size: 2.5rem;
-		    color: #666262;
-
+			color: #666262;
         }
 
         .options-container {
@@ -71,7 +69,7 @@
 			z-index: 2;
         }
 
-        .option {
+        .option, .door {
             padding: 30px 60px; /* Adjusted padding */
             background-color: rgba(255, 255, 255, 0.45);
             color: #333;
@@ -97,7 +95,7 @@
             background-color: #EED3D9;
         }
 
-        .option img {
+        .option img, .door img {
             width: 150px; /* Adjust image width */
             height: 150px; /* Adjust image height */
             object-fit: cover; /* Ensure image covers the container */
@@ -105,12 +103,51 @@
             margin-bottom: 20px; /* Add space between image and text */
         }
 
-        .option b {
+        .option b , .door b{
             margin-top: 10px; /* Add space between image and text */
             font-weight: bold; /* Make the text bold */
         }
 
-    </style>
+		.door b {
+		    margin-bottom: 30px;
+		}
+
+		.box {
+			width: 100px;
+			height: 50px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			border: 2px solid;
+			border-radius: 5px;
+			font-weight: bold;
+			margin-top: 10px;
+		}
+
+		.locked {
+			color: white;
+			background-color: red;
+			font-size: 18px;
+			width: 120px;
+			height: 60px;
+		}
+
+		.unlocked {
+			color: white;
+			background-color: green;
+			font-size: 18px;
+			width: 120px;
+			height:60px;
+		}
+
+		.box-container .pic {
+			width: 50px; /* Decrease the width */
+			height: auto; /* Decrease the height */
+			margin-right: 8px; /* Adjust the spacing */
+			margin-top: 0px;
+		}
+
+</style>
 </head>
 <body>
     <div class="container">
@@ -122,11 +159,6 @@
 					<p></p>
                     <img src="{{ url_for('static', filename='user.png') }}" alt="Image 1">
                 </a>
-                <a href="/door-status" class="option">
-                    <b>Door Status</b>
-					<p></p>
-                    <img src="{{ url_for('static', filename='lock.png') }}" alt="Image 1">
-                </a>
                 <a href="/AccessLogs" class="option">
                     <b>Access Logs</b>
 					<p></p>
@@ -137,6 +169,20 @@
 					<p></p>
                     <img src="{{ url_for('static', filename='unauthorized.png') }}" alt="Image 1">
                 </a>
+                <div class="door">
+                    <b>Door Lock Status</b>
+                    <div class="box-container">
+                        {% if door_status == 'locked' %}
+                        <img src="{{ url_for('static', filename='locked.png') }}" class="pic" alt="Locked">
+                        <div class="box locked">Locked</div>
+                        {% elif door_status == 'unlocked' %}
+                        <img src="{{ url_for('static', filename='unlocked.png') }}" class="pic" alt="Unlocked">
+                        <div class="box unlocked">Unlocked</div>
+                        {% else %}
+                        <p>Door status unknown</p>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
