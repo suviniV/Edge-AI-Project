@@ -1,0 +1,5 @@
+numpy
+cV2
+gpiozero
+smtplib
+signal
