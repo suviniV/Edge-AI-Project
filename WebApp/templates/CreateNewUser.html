@@ -553,41 +553,44 @@
 
         document.addEventListener("DOMContentLoaded", function() {
             document.getElementById("user-form").addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent the default form submission behavior
+                event.preventDefault(); // Prevent the default form submission behavior
 
-            var name = document.getElementById("full-name").value;
-            var email = document.getElementById("email").value;
-            var dropArea = document.querySelector(".drag-area");
-            var imgTag = dropArea.querySelector("img");
+                var name = document.getElementById("full-name").value;
+                var email = document.getElementById("email").value;
+                var dropArea = document.querySelector(".drag-area");
+                var imgTag = dropArea.querySelector("img");
 
-            if (name === "" || email === "" || imgTag === null) {
-                alert("All fields are required");
-                return false; // Prevent form submission
-            }
-
-            // If all fields are filled, submit the form asynchronously
-            var formData = new FormData(document.getElementById("user-form"));
-
-            fetch("/add_user", {
-                method: "POST",
-                body: formData
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
+                if (name === "" || email === "" || imgTag === null) {
+                    alert("All fields are required");
+                    return false; // Prevent form submission
                 }
-                // Handle successful response
-                // For example, redirect to another page
-                alert("User successfully added");
-                window.location.href = "/ActiveUsers";
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                // Handle error if needed
+
+                // If all fields are filled, submit the form asynchronously
+                var formData = new FormData(document.getElementById("user-form"));
+
+                fetch("/add_user", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else if (data.success) {
+                        alert(data.success);
+                        // Delay redirection to ensure the alert is seen
+                        setTimeout(() => {
+                            // Redirect to the active users page
+                            window.location.href = "/ActiveUsers";
+                        }, 1000); // Redirect after 1 second
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    // Handle error if needed
+                });
             });
         });
-    });
-
 
 
 

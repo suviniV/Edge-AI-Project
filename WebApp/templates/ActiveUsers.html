@@ -105,17 +105,39 @@
     <h3 class="title">Active Users</h3>
     <div class="container">
         {% for user in users %}
-        <div class="user-container">
+        <div class="user-container" id="user-{{ loop.index }}">
             <img src="{{ url_for('static', filename=user['pic_path']) }}" alt="{{ user['name'] }}">
             <div class="user-links">
                 <p><b>Name:</b> {{ user['name'] }}</p>
-                <p></p>
                 <p><b>Email:</b> {{ user['email'] }}</p>
-                <a href="#">Delete User</a> <!-- Replace with actual delete functionality if needed -->
+                <a href="#" onclick="deleteUser({{ loop.index }})">Delete User</a>
             </div>
         </div>
         {% endfor %}
     </div>
+
+    <script>
+        function deleteUser(index) {
+            // Confirm deletion
+            if (confirm("Are you sure you want to delete this user?")) {
+                // Remove user from webpage
+                var userContainer = document.getElementById('user-' + index);
+                userContainer.parentNode.removeChild(userContainer);
+
+                // Send AJAX request to delete user from CSV file
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/deleteUser', true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+                        console.log(xhr.responseText);
+                    }
+                };
+                var data = JSON.stringify({ index: index });
+                xhr.send(data);
+            }
+        }
+    </script>
 </body>
 
 </html>

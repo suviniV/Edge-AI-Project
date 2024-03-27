@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect, jsonify
 import logging
 import csv
 import os
@@ -27,23 +27,43 @@ def signin():
         error_message = 'Invalid username or password. Please try again.'
         return render_template('login.html', error_message=error_message, show_popup=True)
 
-UPLOAD_FOLDER = 'static/uploads'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 
 @app.route('/CreateNewUser')
 def CreateNewUser():
     return render_template("CreateNewUser.html")
 
-@app.route('/ActiveUsers')
-def ActiveUsers():
-    users = []
 
-    # Read user details from CSV file
+def read_users_from_csv():
+    users = []
     with open('Database/activeUsers.csv', 'r', newline='') as file:
         reader = csv.DictReader(file)
         for row in reader:
             users.append(row)
+    return users
 
+def write_users_to_csv(users):
+    with open('Database/activeUsers.csv', 'w', newline='') as file:
+        fieldnames = ['name', 'email']
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(users)
+
+@app.route('/deleteUser', methods=['POST'])
+def delete_user():
+    index = int(request.json['index']) - 1  # Adjust index to match Python list indexing
+    users = read_users_from_csv()
+
+    if 0 <= index < len(users):
+        deleted_user = users.pop(index)
+        write_users_to_csv(users)
+        return jsonify({'message': 'User deleted successfully', 'user': deleted_user})
+    else:
+        return jsonify({'error': 'Invalid user index'})
+
+@app.route('/ActiveUsers')
+def active_users():
+    users = read_users_from_csv()
     return render_template('ActiveUsers.html', users=users)
 
 @app.route('/add_user', methods=['POST'])
@@ -53,14 +73,14 @@ def add_user():
 
     # Validate form data
     if not name or not email:
-        return "Error: All fields are required"
+        return jsonify({'error': 'All fields are required'})
 
     # Add user data to CSV file
     with open('Database/activeUsers.csv', 'a', newline='') as file:
         writer = csv.writer(file)
         writer.writerow([name, email])
 
-    return redirect(url_for('ActiveUsers'))
+    return jsonify({'success': 'User Successfully Added'})
 
 
 @app.route('/homepage')
