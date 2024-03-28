@@ -482,6 +482,38 @@
 		  object-fit: cover;
 		  border-radius: 5px;
 		}
+
+		.home-btn {
+		position: fixed;
+        bottom: 60px;
+        left: 50px;
+        width: 130px;
+        height: 49px;
+        font-size: 14px;
+        font-weight: 520;
+        text-transform: uppercase;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #B5C0D0;
+        padding: 10px 20px;
+        border-radius: 20px;
+        color: #666262;
+        text-decoration: none;
+        transition: background-color 0.3s;
+        border: 1px;
+        outline: 2px;
+        cursor: pointer;
+        transition: 0.5s;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        z-index: 7; /* Increase z-index value */
+    }
+
+    .home-btn:hover {
+        background-color: #EED3D9;
+    }
+
+
 	</style>
 </head>
 
@@ -627,6 +659,7 @@
             }
         }
     </script>
+    <a href="/homepage" class="home-btn">Home Page</a>
 </body>
 
 
