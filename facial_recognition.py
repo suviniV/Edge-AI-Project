@@ -7,7 +7,7 @@ face_recognizer = cv2.face.LBPHFaceRecognizer_create()
 # Load saved training data
 face_recognizer.read('trainingData.yml')
 
-name = {0: "Suvini", 1: "Kavindya", 2: "Lakshani", 4: "Abdul", 5: "Ashken"}
+name = {0: "User_A", 1: "User_B"}
 cap = cv2.VideoCapture(0)
 
 while True:

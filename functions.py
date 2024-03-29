@@ -110,18 +110,20 @@ def send_email_alert(image):
     server.quit()
 
 
-
 def is_dark():
     """
     Function to determine if it's dark based on light sensor reading.
     """
-    return light_sensor.value<0.5 # Invert the logic to represent darkness
+    return light_sensor.value < 0.5  # Invert the logic to represent darkness
+
 
 def turn_on_led():
     led.on()
 
+
 def turn_off_led():
     led.off()
+
 
 # When light is detected, turn off the LED
 light_sensor.when_dark = turn_on_led
