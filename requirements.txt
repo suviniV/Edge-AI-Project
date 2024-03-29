@@ -3,3 +3,4 @@ cV2
 gpiozero
 smtplib
 signal
+gpio
