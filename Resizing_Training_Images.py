@@ -8,7 +8,8 @@ for path, subdirnames, filenames in os.walk("trainingImages"):
 
     for filename in filenames:
         if filename.startswith("."):
-            print("Skipping File:", filename)  # Skipping files that startwith .
+            # skip images that starts with .
+            print("Skipping File:", filename)
             continue
         img_path = os.path.join(path, filename)  # fetching image path
         print("img_path", img_path)
