@@ -89,7 +89,7 @@ def send_email_alert(image):
     # Email configuration
     sender_email = 'akhabeer02@gmail.com'
     sender_app_password = 'ulcw soap fxyi wyhz'
-    receiver_email = 'sheffa58@gmail.com'
+    receiver_email = 'kabeer.20210888@iit.ac.lk'
     msg = MIMEMultipart()
     msg['From'] = sender_email
     msg['To'] = receiver_email
