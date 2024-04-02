@@ -128,8 +128,6 @@
         .home-btn:hover {
           background-color: #EED3D9;
         }
-
-
     </style>
 </head>
 
@@ -138,7 +136,8 @@
     <div class="container">
         {% for user in users %}
         <div class="user-container" id="user-{{ loop.index }}">
-            <img src="{{ url_for('static', filename=user['pic_path']) }}" alt="{{ user['name'] }}">
+            <!-- Use user['pic_url'] directly instead of url_for -->
+            <img src="{{ user['pic_url'] }}" alt="{{ user['name'] }}">
             <div class="user-links">
                 <p><b>Name:</b> {{ user['name'] }}</p>
                 <p><b>Email:</b> {{ user['email'] }}</p>
@@ -171,7 +170,5 @@
         }
     </script>
     <a href="/homepage" class="home-btn">Home Page</a>
-
 </body>
-
 </html>
