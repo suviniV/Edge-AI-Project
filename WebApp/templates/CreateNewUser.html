@@ -249,139 +249,19 @@
 		  font-size: 0.8rem;
 		}
 
-		.right-panel .image,
-		.right-panel .content {
-		  transform: translateX(800px);
-		}
-
-
-
-
-		@media (max-width: 870px) {
-		  .container {
-			min-height: 800px;
-			height: 100vh;
-		  }
-		  .signin-signup {
-			width: 100%;
-			top: 95%;
-			transform: translate(-50%, -100%);
-			transition: 1s 0.8s ease-in-out;
-		  }
-
-		  .signin-signup,
-		  .container.sign-up-mode .signin-signup {
-			left: 50%;
-		  }
-
-		  .panels-container {
-			grid-template-columns: 1fr;
-			grid-template-rows: 1fr 2fr 1fr;
-		  }
-
-		  .panel {
-			flex-direction: row;
-			justify-content: space-around;
-			align-items: center;
-			padding: 2.5rem 8%;
-			grid-column: 1 / 2;
-		  }
-
-		  .right-panel {
-			grid-row: 3 / 4;
-		  }
-
-		  .left-panel {
-			grid-row: 1 / 2;
-		  }
-
-		  .image {
-			width: 200px;
-			transition: transform 0.9s ease-in-out;
-			transition-delay: 0.6s;
-		  }
-
-		  .panel .content {
-			padding-right: 15%;
-			transition: transform 0.9s ease-in-out;
-			transition-delay: 0.8s;
-		  }
-
-		  .panel h3 {
-			font-size: 2rem;
-		  }
-
-		  .panel p {
-			font-size: 0.7rem;
-			padding: 0.5rem 0;
-		  }
-
-		  .btn.transparent {
-			width: 110px;
-			height: 35px;
-			font-size: 0.7rem;
-		  }
-
-		  .container:before {
-			width: 1500px;
-			height: 1500px;
-			transform: translateX(-50%);
-			left: 30%;
-			bottom: 68%;
-			right: initial;
-			top: initial;
-			transition: 2s ease-in-out;
-		  }
-
-		  .container.sign-up-mode:before {
-			transform: translate(-50%, 100%);
-			bottom: 32%;
-			right: initial;
-		  }
-
-		}
-
-		@media (max-width: 570px) {
-		  form {
-			padding: 0 1.5rem;
-		  }
-
-		  .image {
-			display: none;
-		  }
-		  .panel .content {
-			padding: 0.5rem 1rem;
-		  }
-		  .container {
-			padding: 1.5rem;
-		  }
-
-		  .container:before {
-			bottom: 72%;
-			left: 50%;
-		  }
-
-		  .container.sign-up-mode:before {
-			bottom: 28%;
-			left: 50%;
-		  }
-		}
-
-
-
 		.login {
 			position: absolute;
-			width: 420px; 
+			width: 420px;
 			height: 470px;
 			display: flex;
 			justify-content: center;
 			align-items: center;
 			flex-direction: column;
 			gap: 20px;
-			background-color: #B5C0D0; 
-			border-radius: 35px; 
-			box-shadow: 0 0 10px rgba(0, 0, 0, 0.4); 
-			padding: 20px; 
+			background-color: #B5C0D0;
+			border-radius: 35px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+			padding: 20px;
 			top: -200px;
 			left: 130px;
 		}
@@ -492,8 +372,8 @@
         font-size: 14px;
         font-weight: 520;
         text-transform: uppercase;
-        display: flex;
-        justify-content: center;
+        display: flex; /* Added to enable centering */
+        justify-content: center; /* Centers the content horizontally */
         align-items: center;
         background-color: #B5C0D0;
         padding: 10px 20px;
@@ -659,7 +539,7 @@
             }
         }
     </script>
-    <a href="/homepage" class="home-btn">Home Page</a>
+    <a href="/home" class="home-btn">Home Page</a>
 </body>
 
 
