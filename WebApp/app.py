@@ -147,17 +147,17 @@ def CreateNewUser():
     return render_template("CreateNewUser.html")
 
 
-@app.route('/deleteUser', methods=['POST'])
-def delete_user():
-    index = int(request.json['index']) - 1  # Adjust index to match Python list indexing
-    users = read_users_from_csv()
-
-    if 0 <= index < len(users):
-        deleted_user = users.pop(index)
-        write_users_to_csv(users)
-        return jsonify({'message': 'User deleted successfully', 'user': deleted_user})
-    else:
-        return jsonify({'error': 'Invalid user index'})
+# @app.route('/deleteUser', methods=['POST'])
+# def delete_user():
+#     index = int(request.json['index']) - 1  # Adjust index to match Python list indexing
+#     users = read_users_from_csv()
+#
+#     if 0 <= index < len(users):
+#         deleted_user = users.pop(index)
+#         write_users_to_csv(users)
+#         return jsonify({'message': 'User deleted successfully', 'user': deleted_user})
+#     else:
+#         return jsonify({'error': 'Invalid user index'})
 
 
 @app.route('/ActiveUsers')
