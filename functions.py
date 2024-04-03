@@ -50,7 +50,7 @@ def labels_for_training_data(directory):
                 print("Image not loaded properly")
                 continue
             faces_rect, gray_img = face_detection(
-                test_img)  # Calling faceDetection function to return faces detected in particular image
+                test_img)  # Calling face_detection function to return faces detected in particular image
             if len(faces_rect) != 1:
                 continue  # Since we are assuming only single person images are being fed to classifier
             (x, y, w, h) = faces_rect[0]
@@ -83,6 +83,47 @@ def train_and_save_classifier(training_images_path, output_file_path):
     faces, faceID = labels_for_training_data(training_images_path)
     face_recognizer = train_classifier(faces, faceID)
     face_recognizer.write(output_file_path)
+
+
+# Main function which calls the functions required for the facial_recognition
+def facial_recognition_func():
+    # Load saved training data
+    face_recognizer = cv2.face.LBPHFaceRecognizer_create()
+    face_recognizer.read('trainingData.yml')
+
+    name = {0: "User_A", 1: "User_B"}
+    cap = cv2.VideoCapture(0)
+
+    while True:
+        ret, test_img = cap.read()
+        faces_detected, gray_img = face_detection(test_img)
+
+        for (x, y, w, h) in faces_detected:
+            cv2.rectangle(test_img, (x, y), (x + w, y + h), (255, 0, 0), thickness=7)
+
+        resized_img = cv2.resize(test_img, (1000, 700))
+        cv2.imshow('face detection Tutorial ', resized_img)
+        cv2.waitKey(10)
+
+        for face in faces_detected:
+            (x, y, w, h) = face
+            roi_gray = gray_img[y:y + w, x:x + h]
+            label, confidence = face_recognizer.predict(roi_gray)  # predicting the label of given image
+            print("confidence:", confidence)
+            print("label:", label)
+            draw_rect(test_img, face)
+            predicted_name = name[label]
+            if confidence < 39:  # If confidence less than 37 then don't print predicted face text on screen
+                put_text(test_img, predicted_name, x, y)
+
+        resized_img = cv2.resize(test_img, (1000, 700))
+        cv2.imshow('face recognition tutorial ', resized_img)
+        # wait until 'q' key is pressed to terminate
+        if cv2.waitKey(10) == ord('q'):
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
 
 
 def send_email_alert(image):
