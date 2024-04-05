@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, url_for, redirect, jsonify
 import csv
+import io
 from datetime import datetime, timedelta
 from azure.storage.blob import generate_container_sas, ContainerSasPermissions, BlobServiceClient
 
@@ -62,15 +63,6 @@ def read_activeUsers():
     return users
 
 
-# Function to write new users to cloud database
-def write_users_to_csv(users):
-    with open('Database/activeUsers.csv', 'w', newline='') as file:
-        fieldnames = ['name', 'email']
-        writer = csv.DictWriter(file, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(users)
-
-
 # Function to read access logs from cloud database
 def read_access_logs():
     logs = []
@@ -114,8 +106,59 @@ def read_unauthorized_access():
 
     return unauthorized_access_logs
 
+# Function to write new users to the cloud database
+def write_activeUsers(users):
+    csv_content = io.StringIO()
+    fieldnames = ['name', 'email']
+
+    writer = csv.DictWriter(csv_content, fieldnames=fieldnames)
+    writer.writeheader()
+    writer.writerows(users)
+
+    blob_service_client = BlobServiceClient.from_connection_string(
+        "DefaultEndpointsProtocol=https;AccountName=databasecw;AccountKey="
+        "tor4V06NY6XHesq2z9vAZ55l3IWWTv9JpL1KT9S4CahV+e2+b9eh4nMy+cZlnpc6EW1WsYHh489/+AStZimtVQ==;EndpointSuffix="
+        "core.windows.net")
+
+    container_client = blob_service_client.get_container_client("activeusersinfo")
+    blob_client = container_client.get_blob_client("activeUsers.csv")
+    blob_client.upload_blob(csv_content.getvalue(), overwrite=True)
+
+
+# Function to add new users to the cloud database
+def add_user_to_database(name, email, profile_picture):
+    # Retrieve existing users from CSV file
+    users = read_activeUsers()
+
+    # Add new user's data to the existing users list
+    users.append({'name': name, 'email': email})
+
+    # Write updated user data back to CSV file
+    write_activeUsers(users)
+
+    # Save user's profile picture
+    blob_service_client = BlobServiceClient.from_connection_string(
+        "DefaultEndpointsProtocol=https;AccountName=databasecw;AccountKey="
+        "tor4V06NY6XHesq2z9vAZ55l3IWWTv9JpL1KT9S4CahV+e2+b9eh4nMy+cZlnpc6EW1WsYHh489/+AStZimtVQ==;EndpointSuffix="
+        "core.windows.net")
+
+    container_client = blob_service_client.get_container_client("activeuserspics")
+    blob_client = container_client.get_blob_client(f"{name}.png")
+    blob_client.upload_blob(profile_picture, overwrite=True)
+
 
 app = Flask(__name__, static_folder='static')
+
+@app.route('/add_user', methods=['POST'])
+def add_user_route():
+    name = request.form.get('full-name')
+    email = request.form.get('email')
+    profile_picture = request.files.get('file')
+
+    # Add user to the database and save picture to Azure Blob Storage
+    add_user_to_database(name, email, profile_picture)
+
+    return jsonify(success=True)
 
 
 @app.route('/')
@@ -172,26 +215,10 @@ def active_users():
 
     for user in users:
         user_name = user["name"]
-        user[ 'pic_url'] = f"https://{account_name}.blob.core.windows.net/{container_name}/{user_name}.png?{container_sas_token}"
+        user[
+            'pic_url'] = f"https://{account_name}.blob.core.windows.net/{container_name}/{user_name}.png?{container_sas_token}"
 
     return render_template('ActiveUsers.html', users=users)
-
-
-@app.route('/add_user', methods=['POST'])
-def add_user():
-    name = request.form.get('full-name')
-    email = request.form.get('email')
-
-    # Validate form data
-    if not name or not email:
-        return jsonify({'error': 'All fields are required'})
-
-    # Add user data to CSV file
-    with open('Database/activeUsers.csv', 'a', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow([name, email])
-
-    return jsonify({'success': 'User Successfully Added'})
 
 
 @app.route('/home')
@@ -218,7 +245,8 @@ def AccessLogs():
 
     for user in logs:
         user_name = user["name"]
-        user['pic_url'] = f"https://{account_name}.blob.core.windows.net/{container_name}/{user_name}.png?{container_sas_token}"
+        user[
+            'pic_url'] = f"https://{account_name}.blob.core.windows.net/{container_name}/{user_name}.png?{container_sas_token}"
 
     return render_template("AccessLogs.html", logs=logs)
 
@@ -235,7 +263,8 @@ def UnauthorizedAccess():
 
     for user in unauthorized_access_logs:
         user_name = user["id"]
-        user['pic_url'] = f"https://{account_name}.blob.core.windows.net/{container_name}/{user_name}.png?{container_sas_token}"
+        user[
+            'pic_url'] = f"https://{account_name}.blob.core.windows.net/{container_name}/{user_name}.png?{container_sas_token}"
 
     return render_template("UnauthorizedAccess.html", UnauthorizedAccesslogs=unauthorized_access_logs)
 
