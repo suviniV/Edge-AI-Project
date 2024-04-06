@@ -147,6 +147,39 @@ def add_user_to_database(name, email, profile_picture):
     blob_client.upload_blob(profile_picture, overwrite=True)
 
 
+def delete_user(index):
+    try:
+        # Load CSV data from blob storage
+        blob_service_client = BlobServiceClient.from_connection_string(
+            "DefaultEndpointsProtocol=https;AccountName=databasecw;AccountKey="
+            "tor4V06NY6XHesq2z9vAZ55l3IWWTv9JpL1KT9S4CahV+e2+b9eh4nMy+cZlnpc6EW1WsYHh489/+AStZimtVQ==;EndpointSuffix="
+            "core.windows.net")
+        container_client = blob_service_client.get_container_client("activeusersinfo")
+        blob_client = container_client.get_blob_client("activeUsers.csv")
+        blob_data = blob_client.download_blob().readall().decode('utf-8')
+
+        # Convert CSV data to list of dictionaries
+        users = []
+        csv_reader = csv.DictReader(io.StringIO(blob_data))
+        for row in csv_reader:
+            users.append(row)
+
+        # Remove user at the specified index
+        user_to_delete = users.pop(index - 1)
+
+        # Write updated CSV data back to blob storage
+        csv_content = io.StringIO()
+        fieldnames = ['name', 'email']
+        writer = csv.DictWriter(csv_content, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(users)
+        blob_client.upload_blob(csv_content.getvalue(), overwrite=True)
+
+        return {'success': f'User {user_to_delete["name"]} has been deleted.'}
+    except Exception as e:
+        return {'error': str(e)}
+
+
 app = Flask(__name__, static_folder='static')
 
 @app.route('/add_user', methods=['POST'])
@@ -159,6 +192,15 @@ def add_user_route():
     add_user_to_database(name, email, profile_picture)
 
     return jsonify(success=True)
+
+@app.route('/deleteUser', methods=['POST'])
+def delete_user_route():
+    try:
+        index = request.json.get('index')
+        response = delete_user(index)
+        return jsonify(response)
+    except Exception as e:
+        return jsonify({'error': str(e)})
 
 
 @app.route('/')
