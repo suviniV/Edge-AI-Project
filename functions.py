@@ -12,6 +12,14 @@ import time
 from gpiozero import LightSensor, LED
 from signal import pause
 
+# Define pin numbers
+light_sensor_pin = 18  # GPIO pin for the light sensor
+lED_pin = 17  # GPIO pin for the LED
+
+# Initialize light sensor and LED
+light_sensor = LightSensor(light_sensor_pin)
+led = LED(lED_pin)
+
 
 # Face detection function using haar cascade model
 def face_detection(test_img):
@@ -155,15 +163,6 @@ def send_email_alert(image):
     server.sendmail(sender_email, receiver_email, msg.as_string())
     # Close the SMTP server connection
     server.quit()
-
-
-# Define pin numbers
-light_sensor_pin = 18  # GPIO pin for the light sensor
-lED_pin = 17  # GPIO pin for the LED
-
-# Initialize light sensor and LED
-light_sensor = LightSensor(light_sensor_pin)
-led = LED(lED_pin)
 
 
 def is_dark():
