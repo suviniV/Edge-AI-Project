@@ -1,7 +1,10 @@
+# Importing Necessary Libraries
 import cv2
 import os
 import numpy as np
 import smtplib
+from picamera.array import PiRGBArray
+from picamera import PiCamera
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
@@ -35,37 +38,40 @@ def face_detection(test_img):
 # returns part of gray_img which is face along with its label/ID
 def labels_for_training_data(directory):
     faces = []
-    faceID = []
+    face_id = []
 
-    for path, subdirnames, filenames in os.walk(directory):
+    for path, sub_dir_names, filenames in os.walk(directory):
         for filename in filenames:
             if filename.startswith("."):
                 # Skipping files that start with .
                 print("Skipping system file")
                 continue
-            id = os.path.basename(path)  # fetching subdirectory names
+            id_no = os.path.basename(path)  # fetching subdirectory names
             img_path = os.path.join(path, filename)  # fetching image path
             print("img_path:", img_path)
-            print("id:", id)
+            print("id:", id_no)
             test_img = cv2.imread(img_path)  # loading each image one by one
+            # Handling if the image isn't loaded properly
             if test_img is None:
                 print("Image not loaded properly")
                 continue
+            # Calling face_detection function to return faces detected in particular image
             faces_rect, gray_img = face_detection(
-                test_img)  # Calling face_detection function to return faces detected in particular image
+                test_img)
+            # Handling of detecting multiple faces since we are only feeding single person images to the classifier
             if len(faces_rect) != 1:
-                continue  # Since we are assuming only single person images are being fed to classifier
+                continue
             (x, y, w, h) = faces_rect[0]
             roi_gray = gray_img[y:y + w, x:x + h]  # cropping region of interest i.e. face area from grayscale image
             faces.append(roi_gray)
-            faceID.append(int(id))
-    return faces, faceID
+            face_id.append(int(id_no))
+    return faces, face_id
 
 
 # Function to train haar classifier and takes faces,faceID returned by previous function as its arguments
-def train_classifier(faces, faceID):
+def train_classifier(faces, face_id):
     face_recognizer = cv2.face.LBPHFaceRecognizer_create()
-    face_recognizer.train(faces, np.array(faceID))
+    face_recognizer.train(faces, np.array(face_id))
     return face_recognizer
 
 
@@ -81,34 +87,40 @@ def put_text(test_img, text, x, y):
 
 
 # Function to save the training images into a yml file
-def train_and_save_classifier(training_images_path, output_file_path):
-    faces, faceID = labels_for_training_data(training_images_path)
-    face_recognizer = train_classifier(faces, faceID)
+def save_training_images_to_yml(training_images_path, output_file_path):
+    faces, face_id = labels_for_training_data(training_images_path)
+    face_recognizer = train_classifier(faces, face_id)
     face_recognizer.write(output_file_path)
 
 
 # Main function which calls the functions required for the facial_recognition
-def facial_recognition_func():
+def main_function():
     # Load saved training data
     face_recognizer = cv2.face.LBPHFaceRecognizer_create()
     face_recognizer.read('trainingData.yml')
 
-    name = {0: "User_A", 1: "User_B"}
-    cap = cv2.VideoCapture(0)
+    name = {0: "Kavindya", 1: "Ashken", 2: "Abdul"}
 
-    while True:
-        ret, test_img = cap.read()
+    # Initializing the PiCamera
+    camera = PiCamera()
+    camera.resolution = (640, 480)
+    camera.frame_rate = 32
+    raw_capture = PiRGBArray(camera, size=(640, 480))
+    time.sleep(0.1)
+    # Loop to continuously capture frames from the camera
+    for frame in camera.capture_continuous(raw_capture, format="bgr", use_video_port=True):
+        # Extract the captured frame as a numpy array
+        test_img = frame.array
+        # Detect faces in the captured frame
         faces_detected, gray_img = face_detection(test_img)
-
+        # Draw rectangles around the detected faces
         for (x, y, w, h) in faces_detected:
-            cv2.rectangle(test_img, (x, y), (x + w, y + h), (255, 0, 0), thickness=7)
-
-        resized_img = cv2.resize(test_img, (1000, 700))
-        cv2.imshow('face detection Tutorial ', resized_img)
-        cv2.waitKey(10)
-
+            draw_rect(test_img, (x, y, w, h))
+        # Loop through each detected face
         for face in faces_detected:
+            # Extract the coordinates and dimensions of the detected face
             (x, y, w, h) = face
+            # Extract the region of interest (ROI) in grayscale from the captured frame
             roi_gray = gray_img[y:y + w, x:x + h]
             label, confidence = face_recognizer.predict(roi_gray)  # predicting the label of given image
             print("confidence:", confidence)
@@ -117,14 +129,16 @@ def facial_recognition_func():
             predicted_name = name[label]
             if confidence < 39:  # If confidence less than 37 then don't print predicted face text on screen
                 put_text(test_img, predicted_name, x, y)
+            else:
+                # Deviations: Handling unrecognized faces
+                put_text(test_img, "Unknown", x, y)
 
-        resized_img = cv2.resize(test_img, (1000, 700))
-        cv2.imshow('face recognition tutorial ', resized_img)
+        cv2.imshow('face recognition', test_img)
+        raw_capture.truncate(0)
         # wait until 'q' key is pressed to terminate
-        if cv2.waitKey(10) == ord('q'):
+        if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
-    cap.release()
     cv2.destroyAllWindows()
 
 
