@@ -1,96 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <title>Upload Picture</title>
-	<style>
-			* {
-		  margin: 0;
-		  padding: 0;
-		  box-sizing: border-box;
-			font-family: 'Montserrat', sans-serif;
-		}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
 
-		body,
-		input {
-		  font-family: 'Montserrat', sans-serif;
-		}
+        body,
+        input {
+            font-family: 'Montserrat', sans-serif;
+        }
 
-		.container:before {
-		  content: "";
-		  position: absolute;
-		  height: 2000px;
-		  width: 2000px;
-		  top: -10%;
-		  right: 48%;
-		  transform: translateY(-50%);
-		  background-image: linear-gradient(-45deg, #CCD3CA 0%, #88AB8E 100%);
-		  transition: 1.8s ease-in-out;
-		  border-radius: 50%;
-		  z-index: 1;
-		}
+        .container:before {
+            content: "";
+            position: absolute;
+            height: 2000px;
+            width: 2000px;
+            top: -10%;
+            right: 48%;
+            transform: translateY(-50%);
+            background-image: linear-gradient(-45deg, #CCD3CA 0%, #88AB8E 100%);
+            transition: 1.8s ease-in-out;
+            border-radius: 50%;
+            z-index: 1;
+        }
 
-		.container {
-		  position: relative;
-		  width: 100%;
-		  background-color: #B5C0D0;
-		  min-height: 100vh;
-		  overflow: hidden;
-		}
+        .container {
+            position: relative;
+            width: 100%;
+            background-color: #B5C0D0;
+            min-height: 100vh;
+            overflow: hidden;
+            z-index: 2;
+        }
 
-		.forms-container {
-		  position: absolute;
-		  width: 100%;
-		  height: 100%;
-		  top: 0;
-		  left: 0;
-		  margin-left: 60px;
-		}
+        .title {
+          margin-bottom: 50px;
+          position: absolute;
+          top: 100px;
+          left: 80px; /* Adjust as needed */
+          z-index: 1;
+          font-weight: 800;
+          line-height: 1;
+          font-size: 2.5rem;
+          color: #666262;
+          z-index: 2;
 
-		.signin-signup {
-		  position: absolute;
-		  top: 50%;
-		  transform: translate(-50%, -50%);
-		  left: 75%;
-		  width: 50%;
-		  transition: 1s 0.7s ease-in-out;
-		  display: grid;
-		  grid-template-columns: 1fr;
-		  z-index: 5;
-		}
+        }
+        .form{
+             margin-left: 80px;
+             margin-top: 260px;
+             z-index: 2;
+         }
 
-		form {
-		  display: flex;
-		  align-items: center;
-		  justify-content: center;
-		  flex-direction: column;
-		  padding: 0rem 5rem;
-		  transition: all 0.2s 0.7s;
-		  overflow: hidden;
-		  grid-column: 1 / 2;
-		  grid-row: 1 / 2;
-		}
-
-		form.sign-up-form {
-		  opacity: 0;
-		  z-index: 1;
-		}
-
-		form.sign-in-form {
-		  z-index: 2;
-		}
-
-		.title {
-		  font-size: 2.2rem;
-		  color: #444;
-		  margin-bottom: 10px;
-		}
-
-		.input-field {
+         .input-field {
 		  max-width: 400px;
 		  width: 100%;
 		  background-color: #f0f0f0;
@@ -102,6 +71,7 @@
 		  grid-template-columns: 15% 85%;
 		  padding: 0 0.4rem;
 		  position: relative;
+		  z-index: 2;
 		}
 
 		.input-field span {
@@ -110,6 +80,7 @@
 		  color: #acacac;
 		  transition: 0.5s;
 		  font-size: 1.1rem;
+		  z-index: 2;
 		}
 
 		.input-field label {
@@ -118,6 +89,7 @@
 			margin-left: 10px;
 			margin-top: 2px;
 			font-weight: 600;
+			z-index: 2;
 		}
 
 		.input-field input {
@@ -131,11 +103,13 @@
 		  display: block;
 		  width: 100%; /* Ensuring the input takes full width */
 		  padding-left: 5px;
+		  z-index: 2;
 		}
 
 		.input-field input::placeholder {
 		  color: #aaa;
 		  font-weight: 500;
+		  z-index: 2;
 		}
 
 		.input-field .fa {
@@ -147,102 +121,13 @@
 			transition: 0.5s;
 			font-size: 1.1rem;
 			padding-left: 15px; /* Adjusted padding for better icon placement */
+			z-index: 2;
 		}
-
-		.btn {
-		  width: 150px;
-		  background-color: #CCD3CA;
-		  border: 1px;
-		  text-align: center;
-		  outline: 2px;
-		  height: 49px;
-		  color: #666262;
-		  text-transform: uppercase;
-		  font-weight: 600;
-		  margin: 1rem 0;
-		  cursor: pointer;
-		  transition: 0.5s;
-		  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-		  border-radius: 20px;
-		}
-
-		.btn:hover {
-		  background-color: #EED3D9;
-		}
-
-		.panels-container {
-		  position: absolute;
-		  height: 100%;
-		  width: 100%;
-		  top: 0;
-		  left: 0;
-		  display: grid;
-		  grid-template-columns: repeat(2, 1fr);
-
-		}
-
-		.panels-container {
-			display: flex;
-			flex-direction: row;
-			flex-wrap: wrap;
-			margin-left: 0px;
-		}
-
-		.image-container-background {
-			margin-left: -30px;
-			margin-right: 60px;
-		}
-
-		.image {
-		  width: 100%;
-		  transition: transform 1.1s ease-in-out;
-		  transition-delay: 0.4s;
-		}
-
-		.panel {
-		  display: flex;
-		  flex-direction: column;
-		  align-items: flex-end;
-		  justify-content: space-around;
-		  text-align: center;
-		  z-index: 6;
-		  margin-left: 10px;
-
-		}
-		.panel h3 {
-		  font-weight: 800;
-		  line-height: 1;
-		  font-size: 2.5rem;
-		  color: #666262;
-		  margin-top: -100px;
-
-		}
-		.panel p {
-		  font-size: 0.95rem;
-		  padding: 0.7rem 0;
-
-		}
-
-		.btn.transparent {
-		  margin: 0;
-		  background: none;
-		  border: 2px solid #fff;
-		  width: 130px;
-		  height: 41px;
-		  font-weight: 600;
-		  font-size: 0.8rem;
-		}
-
-		.right-panel .image,
-		.right-panel .content {
-		  transform: translateX(800px);
-		}
-
 
 		.login-container {
 			display: flex;
-			margin-left: -250px;
-
+			margin-left: 500px;
+			margin-top: -260px;
 		}
 
 		.login {
@@ -384,234 +269,166 @@
         transition: 0.5s;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         z-index: 7; /* Increase z-index value */
-    }
-
-    .home-btn:hover {
-        background-color: #EED3D9;
-    }
-
-    .success-message {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: green;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            z-index: 9999;
         }
 
+        .home-btn:hover {
+            background-color: #EED3D9;
+        }
 
-	</style>
+         .success-message {
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: green;
+                color: white;
+                padding: 10px 20px;
+                border-radius: 5px;
+                z-index: 9999;
+         }
+
+         .button-container {
+            display: flex;
+            justify-content: center;
+            margin-left: -1080px;
+            margin-top: -200px;
+            gap: 40px;
+            z-index: 2; /* Add z-index to ensure buttons are above other elements */
+        }
+
+        .btn {
+		  width: 150px;
+		  background-color: #CCD3CA;
+		  border: 1px;
+		  text-align: center;
+		  outline: 2px;
+		  height: 49px;
+		  color: #666262;
+		  text-transform: uppercase;
+		  font-weight: 600;
+		  margin: 1rem 0;
+		  cursor: pointer;
+		  transition: 0.5s;
+		  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+		  border-radius: 20px;
+		  z-index: 2;
+
+		}
+
+		.btn:hover {
+		  background-color: #EED3D9;
+		}
+    </style>
 </head>
-
 <body>
     <div class="container">
-        <div class="forms-container">
-            <div class="signin-signup">
-                <div class="login-container">
-                    <div class="login">
-                        <div class="login-header">
-                            <p>Upload User Profile Picture</p>
-                        </div>
-                        <div class="drag-area">
-                            <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
-                            <header>Drag & Drop to Upload Picture</header>
-                            <span>OR</span>
-                            <button onclick="openFile()">Browse Picture</button>
-                            <input type="file" name="file" id="file" hidden onchange="showFile()">
-                        </div>
-                    </div>
-                    <div class="login">
-                        <div class="login-header">
-                            <p>Upload Picture Folder</p>
-                        </div>
-                        <div class="drag-area" id="folder-area">
-                            <div class="icon"><i class="fas fa-folder-open"></i></div>
-                            <header>Drag & Drop to Upload Folder</header>
-                            <span>OR</span>
-                            <button onclick="openFolder()">Browse Folder</button>
-                            <input type="file" id="folder-input" name="folder" hidden onchange="showFolder()" webkitdirectory >
-                        </div>
-                    </div>
-                </div>
+        <h2 class="title">Create New User</h2>
+        <form class='form' id="userForm" enctype="multipart/form-data" method="POST" action="/add_user">
+            <div class="input-field">
+                <span class="fa fa-user"></span>
+                <label for="full-name">Name:</label>
+                <input type="text" id="full-name" name="full-name" placeholder="Enter Full Name" required />
             </div>
-        </div>
+            <div class="input-field">
+                <span class="fa fa-envelope"></span>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Enter Your Email" required />
+            </div>
 
-        <div class="panels-container">
-            <div class="panel left-panel">
-                <div class="content">
-                    <h3>Create New User</h3>
-                    <div class="paragraph-wrapper">
-                        <form id="user-form" action="/add_user" method="post" enctype="multipart/form-data">
-                            <div class="input-field">
-                                <span class="fa fa-user"></span>
-                                <label for="full-name">Name:</label>
-                                <input type="text" id="full-name" name="full-name" placeholder="Enter Full Name" required />
-                            </div>
-                            <div class="input-field">
-                                <span class="fa fa-envelope"></span>
-                                <label for="email">Email:</label>
-                                <input type="email" id="email" name="email" placeholder="Enter Your Email" required />
-                            </div>
-                            <div class="button-container">
-                                <button type="button" class="btn solid" onclick="submitForm()">Submit All</button>
-                                <button type="button" class="btn solid" onclick="clearForm()">Clear All</button>
-                            </div>
-                        </form>
+            <div class="login-container">
+                <div class="login">
+                    <div class="login-header">
+                        <p>Upload User Profile Picture</p>
+                    </div>
+                    <div class="drag-area">
+                        <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                        <header>Drag & Drop to Upload Picture</header>
+                        <span>OR</span>
+                        <button type="button" onclick="openFile()">Browse Picture</button>
+                        <input type="file" name="file" id="file" hidden onchange="showFile()">
+                    </div>
+                </div>
+                <div class="login">
+                    <div class="login-header">
+                        <p>Upload Picture Folder</p>
+                    </div>
+                    <div class="drag-area" id="folder-area">
+                        <div class="icon"><i class="fas fa-folder-open"></i></div>
+                        <header>Drag & Drop to Upload Folder</header>
+                        <span>OR</span>
+                        <button type="button" onclick="openFolder()">Browse Folder</button>
+                        <input type="file" id="folder-input" name="folder" hidden onchange="showFolder()">
                     </div>
                 </div>
             </div>
-        </div>
+
+            <div class="button-container">
+                <button type="button" class="btn solid" onclick="validateAndSubmit()">Submit All</button>
+                <button type="button" class="btn solid" onclick="clearForm()">Clear All</button>
+            </div>
+        </form>
         <a href="/home" class="home-btn">Home Page</a>
         <div id="successMessage" class="success-message" style="display: none;">
             User Successfully added to the Database
         </div>
     </div>
-
     <script>
-        // Function to validate form before submission
-        function validateForm() {
-            var name = document.getElementById("full-name").value;
-            var email = document.getElementById("email").value;
-            var imgTag = document.querySelector(".drag-area img");
-
-            if (name === "" || email === "" || imgTag === null) {
-                alert("All fields are required");
-                return false; // Prevent form submission
-            }
-            return true; // Allow form submission
-        }
-
-        // Function to handle form submission
-        function submitForm() {
-            if (validateForm()) {
-                var formData = new FormData(document.getElementById("user-form"));
-
-                fetch("/add_user", {
-                    method: "POST",
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        alert(data.error);
-                    } else if (data.success) {
-                        // Display success message
-                        showSuccessMessage();
-                        // Redirect to ActiveUsers.html after successful submission
-                        window.location.href = '/ActiveUsers.html';
-                    }
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                });
-            }
-        }
-
-        // Function to show success message
-        function showSuccessMessage() {
-            var successMessage = document.getElementById("successMessage");
-            successMessage.style.display = "block";
-
-            // Hide success message after 3 seconds
-            setTimeout(function() {
-                successMessage.style.display = "none";
-            }, 3000);
-        }
-
-        // Function to handle picture upload
         function openFile() {
             document.getElementById("file").click();
         }
 
-        // Function to clear form fields
         function clearForm() {
-            document.getElementById("user-form").reset();
-            var dropArea = document.querySelector(".drag-area");
-            dropArea.innerHTML = `
-                <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
-                <header>Drag & Drop to Upload Picture</header>
-                <span>OR</span>
-                <button onclick="openFile()">Browse Picture</button>
-                <input type="file" name="file" id="file" hidden onchange="showFile()">
-            `;
-
-            var folderArea = document.getElementById("folder-area");
-            folderArea.innerHTML = `
-                <div class="icon"><i class="fas fa-folder-open"></i></div>
-                <header>Drag & Drop to Upload Folder</header>
-                <span>OR</span>
-                <button onclick="openFolder()">Browse Folder</button>
-                <input type="file" id="folder-input" name="folder" hidden onchange="showFolder()">
-            `;
+            document.getElementById("userForm").reset();
         }
-
 
         function showFile() {
             var fileInput = document.getElementById("file");
             var file = fileInput.files[0];
             var dropArea = document.querySelector(".drag-area");
 
-            var fileType = file.type;
-            var validExtensions = ["image/jpeg", "image/jpg", "image/png"];
+            if (file) {
+                var fileType = file.type;
+                var validExtensions = ["image/jpeg", "image/jpg", "image/png"];
 
-            if (validExtensions.includes(fileType)) {
-                var fileReader = new FileReader();
-                fileReader.onload = function() {
-                    var fileURL = fileReader.result;
-                    var imgTag = document.createElement("img");
-                    imgTag.src = fileURL;
-                    imgTag.alt = "image";
-                    dropArea.innerHTML = "";
-                    dropArea.appendChild(imgTag);
-                };
-                fileReader.readAsDataURL(file);
-            } else {
-                alert("This is not an Image File!");
-                dropArea.innerHTML = `
-                    <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
-                    <header>Drag & Drop to Upload Picture</header>
-                    <span>OR</span>
-                    <button onclick="openFile()">Browse Picture</button>
-                    <input type="file" name="file" id="file" hidden onchange="showFile()">
-                `;
-            }
-        }
-
-        // Function to handle folder upload
-        function openFolder() {
-            document.getElementById("folder-input").click();
-        }
-
-        function showFolder() {
-            var folderInput = document.getElementById("folder-input");
-            var folderArea = document.getElementById("folder-area");
-
-            var files = folderInput.files;
-            if (files.length > 0) {
-                var file = files[0];
-                if (file.type !== "") {
-                    // Check if the file type is empty (indicating a folder upload)
-                    alert("Please upload a folder.");
-                    // Clear the input field
-                    folderInput.value = "";
-                    // Clear the displayed folder name
-                    folderArea.innerHTML = `
-                        <div class="icon"><i class="fas fa-folder-open"></i></div>
-                        <header>Drag & Drop to Upload Folder</header>
-                        <span>OR</span>
-                        <button onclick="openFolder()">Browse Folder</button>
-                        <input type="file" id="folder-input" name="folder" hidden onchange="showFolder()">
-                    `;
+                if (validExtensions.includes(fileType)) {
+                    alert("You have selected Your Profile Picture");
                 } else {
-                    var folderName = file.name;
-                    folderArea.innerHTML = `<p>Folder uploaded: ${folderName}</p>`;
+                    alert("This is not an Image File!");
+                    dropArea.innerHTML = `
+                        <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                        <header>Drag & Drop to Upload Picture</header>
+                        <span>OR</span>
+                        <button type="button" onclick="openFile()">Browse Picture</button>
+                        <input type="file" name="file" id="file" hidden onchange="showFile()">
+                    `;
                 }
             }
         }
 
+        function validateAndSubmit() {
+            // Perform form validation
+            var fullName = document.getElementById("full-name").value;
+            var email = document.getElementById("email").value;
+            var fileInput = document.getElementById("file").value;
+
+            if (fullName.trim() === "" || email.trim() === "" || fileInput.trim() === "") {
+                alert("Please fill all fields and upload profile picture.");
+                return;
+            }
+
+            // If all fields are filled, submit the form
+            document.getElementById("userForm").submit();
+
+            // Display success message after form submission
+            document.getElementById("successMessage").style.display = "block";
+
+            // Redirect to ActiveUsers.html after a delay
+            setTimeout(function() {
+                // Add a cache-busting parameter to the URL
+                window.location.href = '/ActiveUsers?' + Date.now();
+            }, 1500);
+        }
     </script>
+
 </body>
 </html>
