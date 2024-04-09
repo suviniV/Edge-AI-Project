@@ -115,8 +115,7 @@ def write_activeUsers(users):
     writer.writeheader()
     writer.writerows(users)
 
-    blob_service_client = BlobServiceClient.from_connection_string(
-        "DefaultEndpointsProtocol=https;AccountName=databasecw;AccountKey="
+    blob_service_client = BlobServiceClient.from_connection_string("DefaultEndpointsProtocol=https;AccountName=databasecw;AccountKey="
         "tor4V06NY6XHesq2z9vAZ55l3IWWTv9JpL1KT9S4CahV+e2+b9eh4nMy+cZlnpc6EW1WsYHh489/+AStZimtVQ==;EndpointSuffix="
         "core.windows.net")
 
@@ -137,14 +136,14 @@ def add_user_to_database(name, email, profile_picture):
     write_activeUsers(users)
 
     # Save user's profile picture
-    blob_service_client = BlobServiceClient.from_connection_string(
-        "DefaultEndpointsProtocol=https;AccountName=databasecw;AccountKey="
+    blob_service_client = BlobServiceClient.from_connection_string("DefaultEndpointsProtocol=https;AccountName=databasecw;AccountKey="
         "tor4V06NY6XHesq2z9vAZ55l3IWWTv9JpL1KT9S4CahV+e2+b9eh4nMy+cZlnpc6EW1WsYHh489/+AStZimtVQ==;EndpointSuffix="
         "core.windows.net")
 
     container_client = blob_service_client.get_container_client("activeuserspics")
     blob_client = container_client.get_blob_client(f"{name}.png")
-    blob_client.upload_blob(profile_picture, overwrite=True)
+    blob_client.upload_blob(profile_picture.read(), overwrite=True)
+
 
 
 def delete_user(index):
@@ -191,7 +190,7 @@ def add_user_route():
     # Add user to the database and save picture to Azure Blob Storage
     add_user_to_database(name, email, profile_picture)
 
-    return jsonify(success=True)
+    return render_template('ActiveUsers.html')
 
 @app.route('/deleteUser', methods=['POST'])
 def delete_user_route():
@@ -230,19 +229,6 @@ def signin():
 @app.route('/CreateNewUser')
 def CreateNewUser():
     return render_template("CreateNewUser.html")
-
-
-# @app.route('/deleteUser', methods=['POST'])
-# def delete_user():
-#     index = int(request.json['index']) - 1  # Adjust index to match Python list indexing
-#     users = read_users_from_csv()
-#
-#     if 0 <= index < len(users):
-#         deleted_user = users.pop(index)
-#         write_users_to_csv(users)
-#         return jsonify({'message': 'User deleted successfully', 'user': deleted_user})
-#     else:
-#         return jsonify({'error': 'Invalid user index'})
 
 
 @app.route('/ActiveUsers')
