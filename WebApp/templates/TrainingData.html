@@ -134,8 +134,8 @@
 
         .login-container {
             display: flex;
-            margin-left: 240px;
-            margin-top: 250px;
+            margin-left: 500px;
+            margin-top: -100px;
         }
 
         .login {
@@ -296,7 +296,7 @@
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: green;
+            background-color: #ED2B2A;
             color: white;
             padding: 10px 20px;
             border-radius: 5px;
@@ -343,16 +343,20 @@
         }
 
         .user-info img {
-            width: 100px;
-            height: 100px;
+            width: 220px;
+            height: 220px;
             border-radius: 50%;
             margin-bottom: 10px;
+			margin-top: -50px;
+			margin-left: 220px;
         }
 
         .user-info p {
             font-size: 1.2rem;
             margin-bottom: 5px;
             color: #666262;
+			margin-top: 10px;
+			margin-left: 220px;
         }
     </style>
 </head>
@@ -360,15 +364,15 @@
 <div class="container">
     <h2 class="title">Integration of the New <span>User</span></h2>
     <div class="user-info">
-            <img src="{{ pic_url }}" alt="{{ user['name'] }}">
+            <img src="{{ pic_url }}">
             {% if user %}
-                <p>Name: {{ user.name }}</p>
-                <p>Email: {{ user.email }}</p>
+                <p><b>Name:</b> {{ user['name'] }}</p>
+                <p><b>Email:</b> {{ user['email'] }}</p>
             {% else %}
                 <p>No user data available.</p>
             {% endif %}
         </div>
-    <form class='form' id="userForm" enctype="multipart/form-data" method="POST" action="/add_user">
+    <form class='form' id="CamUserForm" enctype="multipart/form-data">
         <div class="login-container">
             <div class="login">
                 <div class="login-header">
@@ -383,30 +387,34 @@
                 </div>
             </div>
         </div>
-        <div class="button-container">
-            <button type="button" class="btn solid" onclick="validateAndSubmit()">Submit All</button>
-            <button type="button" class="btn solid" onclick="clearForm()">Clear All</button>
-        </div>
     </form>
     <a href="/home" class="home-btn">Home Page</a>
     <div id="successMessage" class="success-message" style="display: none;">
-        User Successfully added to the SmartDoorLock!
+    Captured Images are being stored in the Database. Please wait for a moment...
     </div>
 </div>
     <script>
+
         function openCamera() {
+    // Delayed display of the message
+    setTimeout(function() {
+        // Display message indicating images are being stored
+        document.getElementById('successMessage').style.display = 'block';
+
         // Send a request to Flask backend to start capturing images
         fetch('/start_capturing_images')
             .then(response => {
                 if (response.ok) {
-                    // Perform actions after successful response
-                    console.log('Capture started successfully');
+                    // Redirect to ActiveUsers after successful response
+                    window.location.href = '/ActiveUsers';
                 } else {
                     console.error('Failed to start capture');
                 }
             })
             .catch(error => console.error('Error:', error));
-    }
+    }, 10000); // 10 seconds delay
+}
+
     </script>
 
 </body>
