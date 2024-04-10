@@ -39,390 +39,374 @@
             min-height: 100vh;
             overflow: hidden;
             z-index: 2;
+            text-align: center;
         }
 
         .title {
-          margin-bottom: 50px;
-          position: absolute;
-          top: 100px;
-          left: 80px; /* Adjust as needed */
-          z-index: 1;
-          font-weight: 800;
-          line-height: 1;
-          font-size: 2.5rem;
-          color: #666262;
-          z-index: 2;
-          margin-left: 80px;
-
+            margin-bottom: 50px;
+            position: absolute;
+            top: 100px;
+            left: 80px;
+            z-index: 1;
+            font-weight: 800;
+            line-height: 1;
+            font-size: 2.5rem;
+            color: #666262;
+            z-index: 2;
+            margin-left: 80px;
         }
-        .form{
-             margin-left: 80px;
-             margin-top: 260px;
-             z-index: 2;
-         }
 
-         .input-field {
-		  max-width: 400px;
-		  width: 100%;
-		  background-color: #f0f0f0;
-		  margin: 10px 0;
-		  margin-bottom: 2rem;
-		  height: 60px;
-		  border-radius: 20px;
-		  display: grid;
-		  grid-template-columns: 15% 85%;
-		  padding: 0 0.4rem;
-		  position: relative;
-		  z-index: 2;
-		  margin-left: 80px;
-		}
+        .title span {
+            display: block;
+        }
 
-		.input-field span {
-		  text-align: center;
-		  line-height: 55px;
-		  color: #acacac;
-		  transition: 0.5s;
-		  font-size: 1.1rem;
-		  z-index: 2;
-		}
+        .form {
+            margin-left: 80px;
+            margin-top: 260px;
+            z-index: 2;
+        }
 
-		.input-field label {
-			font-size: 1rem;
-			margin-bottom: 1rem;
-			margin-left: 10px;
-			margin-top: 2px;
-			font-weight: 600;
-			z-index: 2;
-		}
+        .input-field {
+            max-width: 400px;
+            width: 100%;
+            background-color: #f0f0f0;
+            margin: 10px 0;
+            margin-bottom: 2rem;
+            height: 60px;
+            border-radius: 20px;
+            display: grid;
+            grid-template-columns: 15% 85%;
+            padding: 0 0.4rem;
+            position: relative;
+            z-index: 2;
+            margin-left: 80px;
+        }
 
-		.input-field input {
-		  background: none;
-		  outline: none;
-		  border: none;
-		  line-height: 1;
-		  font-weight: 600;
-		  font-size: 1.1rem;
-		  color: #333;
-		  display: block;
-		  width: 100%; /* Ensuring the input takes full width */
-		  padding-left: 5px;
-		  z-index: 2;
-		}
+        .input-field span {
+            text-align: center;
+            line-height: 55px;
+            color: #acacac;
+            transition: 0.5s;
+            font-size: 1.1rem;
+            z-index: 2;
+        }
 
-		.input-field input::placeholder {
-		  color: #aaa;
-		  font-weight: 500;
-		  z-index: 2;
-		}
+        .input-field label {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            margin-left: 10px;
+            margin-top: 2px;
+            font-weight: 600;
+            z-index: 2;
+        }
 
-		.input-field .fa {
-			margin-top:10px;
-			position: absolute;
-			left: 0;
-			line-height: 55px;
-			color: #acacac;
-			transition: 0.5s;
-			font-size: 1.1rem;
-			padding-left: 15px; /* Adjusted padding for better icon placement */
-			z-index: 2;
-		}
+        .input-field input {
+            background: none;
+            outline: none;
+            border: none;
+            line-height: 1;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #333;
+            display: block;
+            width: 100%;
+            padding-left: 5px;
+            z-index: 2;
+        }
 
-		.login-container {
-			display: flex;
-			margin-left: 500px;
-			margin-top: -260px;
-		}
+        .input-field input::placeholder {
+            color: #aaa;
+            font-weight: 500;
+            z-index: 2;
+        }
 
-		.login {
-			width: 400px;
-			height: 450px;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			flex-direction: column;
-			gap: 20px;
-			background-color: #B5C0D0;
-			border-radius: 35px;
-			box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-			padding: 20px;
-			margin-right: 100px;
-			margin-left: 380px;
-			z-index: 8;
+        .input-field .fa {
+            margin-top: 10px;
+            position: absolute;
+            left: 0;
+            line-height: 55px;
+            color: #acacac;
+            transition: 0.5s;
+            font-size: 1.1rem;
+            padding-left: 15px;
+            z-index: 2;
+        }
 
-		}
+        .login-container {
+            display: flex;
+            margin-left: 240px;
+            margin-top: 250px;
+        }
 
-		.login h2 {
-			font-size: 2em;
-			color: #666262;
-			margin-left: 80px;
-		}
+        .login {
+            width: 400px;
+            height: 450px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 20px;
+            background-color: #B5C0D0;
+            border-radius: 35px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            margin-right: 100px;
+            margin-left: 380px;
+            z-index: 8;
+        }
 
-		.login .inputBx {
-			position: relative;
-			width: 100%;
-		}
+        .login h2 {
+            font-size: 2em;
+            color: #666262;
+            margin-left: 80px;
+        }
 
-		.login .inputBx input {
-			position: relative;
-			width: 100%;
-			padding: 12px 20px;
-			background: transparent;
-			border: 2px solid #666262;
-			border-radius: 30px;
-			font-size: 1.2em;
-			color: #666262;
-			box-shadow: none;
-			outline: none;
-		}
+        .login .inputBx {
+            position: relative;
+            width: 100%;
+        }
 
-		.login .inputBx input[type="submit"] {
-			width: 100%;
-			background: #0078ff;
-			background: linear-gradient(45deg, #ff357a, #fff172);
-			border: none;
-			cursor: pointer;
-			color: #fff;
-		}
+        .login .inputBx input {
+            position: relative;
+            width: 100%;
+            padding: 12px 20px;
+            background: transparent;
+            border: 2px solid #666262;
+            border-radius: 30px;
+            font-size: 1.2em;
+            color: #666262;
+            box-shadow: none;
+            outline: none;
+        }
 
-		.login .inputBx input::placeholder {
-			color: #666262;
-		}
+        .login .inputBx input[type="submit"] {
+            width: 100%;
+            background: #0078ff;
+            background: linear-gradient(45deg, #ff357a, #fff172);
+            border: none;
+            cursor: pointer;
+            color: #fff;
+        }
 
-		.drag-area{
-		  border: 2px dashed #fff;
-		  height: 430px;
-		  width: 380px;
-		  border-radius: 35px;
-		  display: flex;
-		  align-items: center;
-		  justify-content: center;
-		  flex-direction: column;
-		  right: 80px;
-          top: -50px;
-		}
-		.drag-area.active{
-		  border: 2px solid #fff;
-		}
-		.drag-area .icon{
-		  font-size: 100px;
-		  color: #fff;
-		}
-		.drag-area header{
-		  font-size: 25px;
-		  font-weight: 600;
-		  color: #fff;
-		  text-align: center;
-		}
+        .login .inputBx input::placeholder {
+            color: #666262;
+        }
 
-		.login-header p{
-		  font-weight: 700;
-		  line-height: 1;
-		  font-size: 1.5rem;
-		  color: #666262;
-		  text-align: center
-		}
+        .drag-area {
+            border: 2px dashed #fff;
+            height: 430px;
+            width: 380px;
+            border-radius: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            right: 80px;
+            top: -50px;
+        }
 
-		.drag-area span{
-		  font-size: 25px;
-		  font-weight: 500;
-		  color: #fff;
-		  margin: 10px 0 15px 0;
-		}
-		.drag-area button{
-		  padding: 10px 25px;
-		  font-size: 15px;
-		  font-weight: 500;
-		  border: none;
-		  outline: none;
-		  background: #CCD3CA;
-		  color: #5256ad;
-		  border-radius: 20px;
-		  cursor: pointer;
-		  transition: 0.5s;
-		  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-		}
+        .drag-area.active {
+            border: 2px solid #fff;
+        }
 
-		.drag-area button:hover {
-		  background-color: #EED3D9;
-		}
-		.drag-area img{
-		  height: 100%;
-		  width: 100%;
-		  object-fit: cover;
-		  border-radius: 5px;
-		}
+        .drag-area .icon {
+            font-size: 100px;
+            color: #fff;
+        }
 
-		.home-btn {
-		position: fixed;
-        bottom: 60px;
-        left: 50px;
-        width: 130px;
-        height: 49px;
-        font-size: 14px;
-        font-weight: 520;
-        text-transform: uppercase;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #B5C0D0;
-        padding: 10px 20px;
-        border-radius: 20px;
-        color: #666262;
-        text-decoration: none;
-        transition: background-color 0.3s;
-        border: 1px;
-        outline: 2px;
-        cursor: pointer;
-        transition: 0.5s;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        z-index: 7; /* Increase z-index value */
+        .drag-area header {
+            font-size: 25px;
+            font-weight: 600;
+            color: #fff;
+            text-align: center;
+        }
+
+        .login-header p {
+            font-weight: 700;
+            line-height: 1;
+            font-size: 1.5rem;
+            color: #666262;
+            text-align: center
+        }
+
+        .drag-area span {
+            font-size: 25px;
+            font-weight: 500;
+            color: #fff;
+            margin: 10px 0 15px 0;
+        }
+
+        .drag-area button {
+            padding: 10px 25px;
+            font-size: 15px;
+            font-weight: 500;
+            border: none;
+            outline: none;
+            background: #CCD3CA;
+            color: #5256ad;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.5s;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .drag-area button:hover {
+            background-color: #EED3D9;
+        }
+
+        .drag-area img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .home-btn {
+            position: fixed;
+            bottom: 60px;
+            left: 50px;
+            width: 130px;
+            height: 49px;
+            font-size: 14px;
+            font-weight: 520;
+            text-transform: uppercase;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #B5C0D0;
+            padding: 10px 20px;
+            border-radius: 20px;
+            color: #666262;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            border: 1px;
+            outline: 2px;
+            cursor: pointer;
+            transition: 0.5s;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 7;
         }
 
         .home-btn:hover {
             background-color: #EED3D9;
         }
 
-         .success-message {
-                position: fixed;
-                top: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                background-color: green;
-                color: white;
-                padding: 10px 20px;
-                border-radius: 5px;
-                z-index: 9999;
-         }
+        .success-message {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: green;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 9999;
+        }
 
-         .button-container {
+        .button-container {
             display: flex;
             justify-content: center;
             margin-left: -900px;
             margin-top: -200px;
             gap: 40px;
-            z-index: 2; /* Add z-index to ensure buttons are above other elements */
+            z-index: 2;
         }
 
         .btn {
-		  width: 150px;
-		  background-color: #CCD3CA;
-		  border: 1px;
-		  text-align: center;
-		  outline: 2px;
-		  height: 49px;
-		  color: #666262;
-		  text-transform: uppercase;
-		  font-weight: 600;
-		  margin: 1rem 0;
-		  cursor: pointer;
-		  transition: 0.5s;
-		  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-		  border-radius: 20px;
-		  z-index: 2;
+            width: 150px;
+            background-color: #CCD3CA;
+            border: 1px;
+            text-align: center;
+            outline: 2px;
+            height: 49px;
+            color: #666262;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin: 1rem 0;
+            cursor: pointer;
+            transition: 0.5s;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            z-index: 2;
+        }
 
-		}
+        .btn:hover {
+            background-color: #EED3D9;
+        }
 
-		.btn:hover {
-		  background-color: #EED3D9;
-		}
+        .user-info {
+            position: absolute;
+            top: 300px;
+            left: 50px;
+            z-index: 3;
+            text-align: left;
+        }
+
+        .user-info img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .user-info p {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: #666262;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2 class="title">Create New User</h2>
-        <form class='form' id="userForm" enctype="multipart/form-data" method="POST" action="/add_user">
-            <div class="input-field">
-                <span class="fa fa-user"></span>
-                <label for="full-name">Name:</label>
-                <input type="text" id="full-name" name="full-name" placeholder="Enter Full Name" required />
-            </div>
-            <div class="input-field">
-                <span class="fa fa-envelope"></span>
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" placeholder="Enter Your Email" required />
-            </div>
-
-            <div class="login-container">
-                <div class="login">
-                    <div class="login-header">
-                        <p>Capturing Training Pictures for the SmartDoorLock</p>
-                    </div>
-                    <div class="drag-area">
-                        <div class="icon"><i class="fa fa-camera-retro" aria-hidden="true"></i></div>
-                        <header>Click to Open the Camera</header>
-                        <span></span>
-                        <button type="button" onclick="openFile()">Open Camera</button>
-                        <input type="file" name="file" id="file" hidden onchange="showFile()">
-                    </div>
+<div class="container">
+    <h2 class="title">Integration of the New <span>User</span></h2>
+    <div class="user-info">
+            <img src="{{ pic_url }}" alt="{{ user['name'] }}">
+            {% if user %}
+                <p>Name: {{ user.name }}</p>
+                <p>Email: {{ user.email }}</p>
+            {% else %}
+                <p>No user data available.</p>
+            {% endif %}
+        </div>
+    <form class='form' id="userForm" enctype="multipart/form-data" method="POST" action="/add_user">
+        <div class="login-container">
+            <div class="login">
+                <div class="login-header">
+                    <p>Capturing Images Of New User</p>
+                </div>
+                <div class="drag-area">
+                    <div class="icon"><i class="fa fa-camera-retro" aria-hidden="true"></i></div>
+                    <header>Click to Open the Camera</header>
+                    <span></span>
+                    <button type="button" onclick="openCamera()">Open Camera</button>
+                    <input type="file" name="file" id="file" hidden onchange="showFile()">
                 </div>
             </div>
-
-            <div class="button-container">
-                <button type="button" class="btn solid" onclick="validateAndSubmit()">Submit All</button>
-                <button type="button" class="btn solid" onclick="clearForm()">Clear All</button>
-            </div>
-        </form>
-        <a href="/home" class="home-btn">Home Page</a>
-        <div id="successMessage" class="success-message" style="display: none;">
-            User Successfully added to the Database
         </div>
+        <div class="button-container">
+            <button type="button" class="btn solid" onclick="validateAndSubmit()">Submit All</button>
+            <button type="button" class="btn solid" onclick="clearForm()">Clear All</button>
+        </div>
+    </form>
+    <a href="/home" class="home-btn">Home Page</a>
+    <div id="successMessage" class="success-message" style="display: none;">
+        User Successfully added to the SmartDoorLock!
     </div>
+</div>
     <script>
-        function openFile() {
-            document.getElementById("file").click();
-        }
-
-        function clearForm() {
-            document.getElementById("userForm").reset();
-        }
-
-        function showFile() {
-            var fileInput = document.getElementById("file");
-            var file = fileInput.files[0];
-            var dropArea = document.querySelector(".drag-area");
-
-            if (file) {
-                var fileType = file.type;
-                var validExtensions = ["image/jpeg", "image/jpg", "image/png"];
-
-                if (validExtensions.includes(fileType)) {
-                    alert("You have selected Your Profile Picture");
+        function openCamera() {
+        // Send a request to Flask backend to start capturing images
+        fetch('/start_capturing_images')
+            .then(response => {
+                if (response.ok) {
+                    // Perform actions after successful response
+                    console.log('Capture started successfully');
                 } else {
-                    alert("This is not an Image File!");
-                    dropArea.innerHTML = `
-                        <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
-                        <header>Drag & Drop to Upload Picture</header>
-                        <span>OR</span>
-                        <button type="button" onclick="openFile()">Browse Picture</button>
-                        <input type="file" name="file" id="file" hidden onchange="showFile()">
-                    `;
+                    console.error('Failed to start capture');
                 }
-            }
-        }
-
-        function validateAndSubmit() {
-            // Perform form validation
-            var fullName = document.getElementById("full-name").value;
-            var email = document.getElementById("email").value;
-            var fileInput = document.getElementById("file").value;
-
-            if (fullName.trim() === "" || email.trim() === "" || fileInput.trim() === "") {
-                alert("Please fill all fields and upload profile picture.");
-                return;
-            }
-
-            // If all fields are filled, submit the form
-            document.getElementById("userForm").submit();
-
-            // Display success message after form submission
-            document.getElementById("successMessage").style.display = "block";
-
-            // Redirect to ActiveUsers.html after a delay
-            setTimeout(function() {
-                // Add a cache-busting parameter to the URL
-                window.location.href = '/ActiveUsers?' + Date.now();
-            }, 1500);
-        }
+            })
+            .catch(error => console.error('Error:', error));
+    }
     </script>
 
 </body>
