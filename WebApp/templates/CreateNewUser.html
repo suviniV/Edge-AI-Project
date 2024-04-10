@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <title>User Registration</title>
     <style>
         * {
@@ -51,6 +52,7 @@
           font-size: 2.5rem;
           color: #666262;
           z-index: 2;
+          margin-left: 80px;
 
         }
         .form{
@@ -72,6 +74,7 @@
 		  padding: 0 0.4rem;
 		  position: relative;
 		  z-index: 2;
+		  margin-left: 80px;
 		}
 
 		.input-field span {
@@ -143,6 +146,7 @@
 			box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 			padding: 20px;
 			margin-right: 100px;
+			margin-left: 380px;
 			z-index: 8;
 
 		}
@@ -150,6 +154,7 @@
 		.login h2 {
 			font-size: 2em;
 			color: #666262;
+			margin-left: 80px;
 		}
 
 		.login .inputBx {
@@ -192,6 +197,8 @@
 		  align-items: center;
 		  justify-content: center;
 		  flex-direction: column;
+		  right: 80px;
+          top: -50px;
 		}
 		.drag-area.active{
 		  border: 2px solid #fff;
@@ -290,7 +297,7 @@
          .button-container {
             display: flex;
             justify-content: center;
-            margin-left: -1080px;
+            margin-left: -900px;
             margin-top: -200px;
             gap: 40px;
             z-index: 2; /* Add z-index to ensure buttons are above other elements */
@@ -342,22 +349,10 @@
                     </div>
                     <div class="drag-area">
                         <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
-                        <header>Drag & Drop to Upload Picture</header>
-                        <span>OR</span>
+                        <header>Click to Upload Profile Picture</header>
+                        <span></span>
                         <button type="button" onclick="openFile()">Browse Picture</button>
                         <input type="file" name="file" id="file" hidden onchange="showFile()">
-                    </div>
-                </div>
-                <div class="login">
-                    <div class="login-header">
-                        <p>Upload Picture Folder</p>
-                    </div>
-                    <div class="drag-area" id="folder-area">
-                        <div class="icon"><i class="fas fa-folder-open"></i></div>
-                        <header>Drag & Drop to Upload Folder</header>
-                        <span>OR</span>
-                        <button type="button" onclick="openFolder()">Browse Folder</button>
-                        <input type="file" id="folder-input" name="folder" hidden onchange="showFolder()">
                     </div>
                 </div>
             </div>
@@ -425,8 +420,8 @@
             // Redirect to ActiveUsers.html after a delay
             setTimeout(function() {
                 // Add a cache-busting parameter to the URL
-                window.location.href = '/ActiveUsers?' + Date.now();
-            }, 1500);
+                window.location.href = '/TrainingData';
+            }, 6500);
         }
     </script>
 
