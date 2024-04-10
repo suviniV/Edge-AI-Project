@@ -1,6 +1,8 @@
-from flask import Flask, render_template, request, url_for, redirect, jsonify
+from flask import Flask, render_template, request, url_for, redirect, jsonify, session
 import csv
+import time
 import io
+import subprocess
 from datetime import datetime, timedelta
 from azure.storage.blob import generate_container_sas, ContainerSasPermissions, BlobServiceClient
 
@@ -178,6 +180,21 @@ def delete_user(index):
     except Exception as e:
         return {'error': str(e)}
 
+def upload_images_to_azure_storage():
+    account_name = "smartlocktrainingimages"
+    account_key = "kwpvrBsa5FRw9z95H4O2Ov0fyWQBgdig/S8+I4YZIY8iChizBeHvX0SS2C4wqbr6CpHR96uU7ypu+AStV7xGUg=="
+    container_name = "second"
+
+    # Create a BlobServiceClient object
+    blob_service_client = BlobServiceClient(account_url=f"https://{account_name}.blob.core.windows.net/", credential=account_key)
+
+    # Get a container client
+    container_client = blob_service_client.get_container_client(container_name)
+
+    # Upload images to the container
+    for i in range(300):
+        blob_client = container_client.upload_blob(name=f"frame{i}.jpg", data=open(f"frame{i}.jpg", "rb"))
+
 
 app = Flask(__name__, static_folder='static')
 
@@ -189,8 +206,8 @@ def add_user_route():
 
     # Add user to the database and save picture to Azure Blob Storage
     add_user_to_database(name, email, profile_picture)
-
-    return render_template('ActiveUsers.html')
+    time.sleep(30)
+    return render_template('TrainingData.html')
 
 @app.route('/deleteUser', methods=['POST'])
 def delete_user_route():
@@ -229,6 +246,43 @@ def signin():
 @app.route('/CreateNewUser')
 def CreateNewUser():
     return render_template("CreateNewUser.html")
+
+@app.route('/TrainingData')
+def training_data():
+    account_name = "databasecw"
+    account_key = "tor4V06NY6XHesq2z9vAZ55l3IWWTv9JpL1KT9S4CahV+e2+b9eh4nMy+cZlnpc6EW1WsYHh489/+AStZimtVQ=="
+    container_pics_name = "activeuserspics"
+
+    users = read_activeUsers()
+    container_pics_token = generate_container_sas_token(account_name, container_pics_name, account_key)
+
+    if users:
+        latest_user = users[-1]  # Retrieve the last user
+        user_name = latest_user["name"]
+        pic_url = f"https://{account_name}.blob.core.windows.net/{container_pics_name}/{user_name}.png?{container_pics_token}"
+        return render_template("TrainingData.html", pic_url=pic_url, user=latest_user)
+    else:
+        # Handle case when there are no users
+        return render_template("TrainingData.html", pic_url=None, user=None)
+
+
+# Set the secret key for the application
+app.config['SECRET_KEY'] = '1c0f99d5e76ce48e1f400dd8b091c09ee08d0f605ad68c78'
+
+@app.route('/start_capturing_images')
+def start_capturing_images():
+    # Call the testcam.py script
+    subprocess.run(["python", "testcam.py"])
+
+    # After capturing images, upload them to Azure Storage
+    upload_images_to_azure_storage()
+
+    # Set the capture success flag in the session
+    session['capture_success'] = True
+
+    # Return a response indicating success
+    return jsonify({'success': True})
+
 
 
 @app.route('/ActiveUsers')
