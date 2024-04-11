@@ -132,7 +132,7 @@
                 <div class="user-name">
                     <span class="user">{{ user['name'] }}</span>
                 </div>
-                <img src="{{ url_for('static', filename='userr.png') }}" alt="{{ user['name'] }}" class="user-pic">
+                <img src="{{ user['pic_url'] }}" alt="{{ user['name'] }}" class="user-pic">
                 <div class="user-logs">
                     <p class="user-log-item"><b>Time: </b><span>{{ user['time'] }}</span></p>
                     <p class="user-log-item"><b>Attempts: </b><span>{{ user['no_of_attempts'] }}</span></p>
@@ -142,6 +142,6 @@
             {% endfor %}
         </ul>
     </div>
-    <a href="/homepage" class="home-btn">Home Page</a>
+    <a href="/home" class="home-btn">Home Page</a>
 </body>
 </html>

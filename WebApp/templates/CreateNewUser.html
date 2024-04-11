@@ -1,82 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <title>Upload Picture</title>
-	<style>
-			* {
-		  margin: 0;
-		  padding: 0;
-		  box-sizing: border-box;
-			font-family: 'Montserrat', sans-serif;
-		}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>User Registration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
 
-		body,
-		input {
-		  font-family: 'Montserrat', sans-serif;
-		}
+        body,
+        input {
+            font-family: 'Montserrat', sans-serif;
+        }
 
-		.container {
-		  position: relative;
-		  width: 100%;
-		  background-color: #B5C0D0;
-		  min-height: 100vh;
-		  overflow: hidden;
-		}
+        .container:before {
+            content: "";
+            position: absolute;
+            height: 2000px;
+            width: 2000px;
+            top: -10%;
+            right: 48%;
+            transform: translateY(-50%);
+            background-image: linear-gradient(-45deg, #CCD3CA 0%, #88AB8E 100%);
+            transition: 1.8s ease-in-out;
+            border-radius: 50%;
+            z-index: 1;
+        }
 
-		.forms-container {
-		  position: absolute;
-		  width: 100%;
-		  height: 100%;
-		  top: 0;
-		  left: 0;
-		  margin-left: 60px;
-		}
+        .container {
+            position: relative;
+            width: 100%;
+            background-color: #B5C0D0;
+            min-height: 100vh;
+            overflow: hidden;
+            z-index: 2;
+        }
 
-		.signin-signup {
-		  position: absolute;
-		  top: 50%;
-		  transform: translate(-50%, -50%);
-		  left: 75%;
-		  width: 50%;
-		  transition: 1s 0.7s ease-in-out;
-		  display: grid;
-		  grid-template-columns: 1fr;
-		  z-index: 5;
-		}
+        .title {
+          margin-bottom: 50px;
+          position: absolute;
+          top: 100px;
+          left: 80px; /* Adjust as needed */
+          z-index: 1;
+          font-weight: 800;
+          line-height: 1;
+          font-size: 2.5rem;
+          color: #666262;
+          z-index: 2;
+          margin-left: 80px;
 
-		form {
-		  display: flex;
-		  align-items: center;
-		  justify-content: center;
-		  flex-direction: column;
-		  padding: 0rem 5rem;
-		  transition: all 0.2s 0.7s;
-		  overflow: hidden;
-		  grid-column: 1 / 2;
-		  grid-row: 1 / 2;
-		}
+        }
+        .form{
+             margin-left: 80px;
+             margin-top: 260px;
+             z-index: 2;
+         }
 
-		form.sign-up-form {
-		  opacity: 0;
-		  z-index: 1;
-		}
-
-		form.sign-in-form {
-		  z-index: 2;
-		}
-
-		.title {
-		  font-size: 2.2rem;
-		  color: #444;
-		  margin-bottom: 10px;
-		}
-
-		.input-field {
+         .input-field {
 		  max-width: 400px;
 		  width: 100%;
 		  background-color: #f0f0f0;
@@ -88,6 +73,8 @@
 		  grid-template-columns: 15% 85%;
 		  padding: 0 0.4rem;
 		  position: relative;
+		  z-index: 2;
+		  margin-left: 80px;
 		}
 
 		.input-field span {
@@ -96,14 +83,16 @@
 		  color: #acacac;
 		  transition: 0.5s;
 		  font-size: 1.1rem;
+		  z-index: 2;
 		}
 
 		.input-field label {
-			font-size: 1rem; 
+			font-size: 1rem;
 			margin-bottom: 1rem;
 			margin-left: 10px;
 			margin-top: 2px;
 			font-weight: 600;
+			z-index: 2;
 		}
 
 		.input-field input {
@@ -117,12 +106,13 @@
 		  display: block;
 		  width: 100%; /* Ensuring the input takes full width */
 		  padding-left: 5px;
-		  margin-top:10px;
+		  z-index: 2;
 		}
 
 		.input-field input::placeholder {
 		  color: #aaa;
-		  font-weight: 500; 
+		  font-weight: 500;
+		  z-index: 2;
 		}
 
 		.input-field .fa {
@@ -134,261 +124,37 @@
 			transition: 0.5s;
 			font-size: 1.1rem;
 			padding-left: 15px; /* Adjusted padding for better icon placement */
+			z-index: 2;
 		}
 
-		.btn {
-		  width: 150px;
-		  background-color: #CCD3CA;
-		  border: 1px;
-		  text-align: center;
-		  outline: 2px;
-		  height: 49px;
-		  color: #666262;
-		  text-transform: uppercase;
-		  font-weight: 600;
-		  margin: 1rem 0;
-		  cursor: pointer;
-		  transition: 0.5s;
-		  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); 
-		  border-radius: 20px;
-		}
-
-
-
-		.btn:hover {
-		  background-color: #EED3D9;
-		}
-		.panels-container {
-		  position: absolute;
-		  height: 100%;
-		  width: 100%;
-		  top: 0;
-		  left: 0;
-		  display: grid;
-		  grid-template-columns: repeat(2, 1fr);
-		}
-
-		.panels-container .content {
+		.login-container {
 			display: flex;
-			flex-direction: row;
-			flex-wrap: wrap;
-			justify-content: center; 
+			margin-left: 500px;
+			margin-top: -260px;
 		}
-
-
-		.container:before {
-		  content: "";
-		  position: absolute;
-		  height: 2000px;
-		  width: 2000px;
-		  top: -10%;
-		  right: 48%;
-		  transform: translateY(-50%);
-		  background-image: linear-gradient(-45deg, #CCD3CA 0%, #88AB8E 100%);
-		  transition: 1.8s ease-in-out;
-		  border-radius: 50%;
-		  z-index: 6;
-		}
-
-		.image-container-background {
-			margin-left: -30px; 
-			margin-right: 60px;
-		}
-
-		.image {
-		  width: 100%;
-		  transition: transform 1.1s ease-in-out;
-		  transition-delay: 0.4s;
-		}
-
-		.panel {
-		  display: flex;
-		  flex-direction: column;
-		  align-items: flex-end;
-		  justify-content: space-around;
-		  text-align: center;
-		  z-index: 6;
-		}
-
-		.left-panel {
-		  pointer-events: all;
-		  padding: 3rem 17% 2rem 12%;
-		}
-
-		.right-panel {
-		  pointer-events: none;
-		  padding: 3rem 12% 2rem 17%;
-		}
-
-		.panel .content {
-		  color: #666262;
-		  transition: transform 0.9s ease-in-out;
-		  transition-delay: 0.6s;
-		}
-
-		.panel h3 {
-		  font-weight: 800;
-		  line-height: 1;
-		  font-size: 2.5rem;
-		  color: #666262;
-		  margin-bottom: 50px;
-		}
-
-		.panel p {
-		  font-size: 0.95rem;
-		  padding: 0.7rem 0;
-		}
-
-		.btn.transparent {
-		  margin: 0;
-		  background: none;
-		  border: 2px solid #fff;
-		  width: 130px;
-		  height: 41px;
-		  font-weight: 600;
-		  font-size: 0.8rem;
-		}
-
-		.right-panel .image,
-		.right-panel .content {
-		  transform: translateX(800px);
-		}
-
-
-
-
-		@media (max-width: 870px) {
-		  .container {
-			min-height: 800px;
-			height: 100vh;
-		  }
-		  .signin-signup {
-			width: 100%;
-			top: 95%;
-			transform: translate(-50%, -100%);
-			transition: 1s 0.8s ease-in-out;
-		  }
-
-		  .signin-signup,
-		  .container.sign-up-mode .signin-signup {
-			left: 50%;
-		  }
-
-		  .panels-container {
-			grid-template-columns: 1fr;
-			grid-template-rows: 1fr 2fr 1fr;
-		  }
-
-		  .panel {
-			flex-direction: row;
-			justify-content: space-around;
-			align-items: center;
-			padding: 2.5rem 8%;
-			grid-column: 1 / 2;
-		  }
-
-		  .right-panel {
-			grid-row: 3 / 4;
-		  }
-
-		  .left-panel {
-			grid-row: 1 / 2;
-		  }
-
-		  .image {
-			width: 200px;
-			transition: transform 0.9s ease-in-out;
-			transition-delay: 0.6s;
-		  }
-
-		  .panel .content {
-			padding-right: 15%;
-			transition: transform 0.9s ease-in-out;
-			transition-delay: 0.8s;
-		  }
-
-		  .panel h3 {
-			font-size: 2rem;
-		  }
-
-		  .panel p {
-			font-size: 0.7rem;
-			padding: 0.5rem 0;
-		  }
-
-		  .btn.transparent {
-			width: 110px;
-			height: 35px;
-			font-size: 0.7rem;
-		  }
-
-		  .container:before {
-			width: 1500px;
-			height: 1500px;
-			transform: translateX(-50%);
-			left: 30%;
-			bottom: 68%;
-			right: initial;
-			top: initial;
-			transition: 2s ease-in-out;
-		  }
-
-		  .container.sign-up-mode:before {
-			transform: translate(-50%, 100%);
-			bottom: 32%;
-			right: initial;
-		  }
-
-		}
-
-		@media (max-width: 570px) {
-		  form {
-			padding: 0 1.5rem;
-		  }
-
-		  .image {
-			display: none;
-		  }
-		  .panel .content {
-			padding: 0.5rem 1rem;
-		  }
-		  .container {
-			padding: 1.5rem;
-		  }
-
-		  .container:before {
-			bottom: 72%;
-			left: 50%;
-		  }
-
-		  .container.sign-up-mode:before {
-			bottom: 28%;
-			left: 50%;
-		  }
-		}
-
-
 
 		.login {
-			position: absolute;
-			width: 420px; 
-			height: 470px;
+			width: 400px;
+			height: 450px;
 			display: flex;
 			justify-content: center;
 			align-items: center;
 			flex-direction: column;
 			gap: 20px;
-			background-color: #B5C0D0; 
-			border-radius: 35px; 
-			box-shadow: 0 0 10px rgba(0, 0, 0, 0.4); 
-			padding: 20px; 
-			top: -200px;
-			left: 130px;
+			background-color: #B5C0D0;
+			border-radius: 35px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+			padding: 20px;
+			margin-right: 100px;
+			margin-left: 380px;
+			z-index: 8;
+
 		}
 
 		.login h2 {
 			font-size: 2em;
 			color: #666262;
+			margin-left: 80px;
 		}
 
 		.login .inputBx {
@@ -401,8 +167,8 @@
 			width: 100%;
 			padding: 12px 20px;
 			background: transparent;
-			border: 2px solid #666262; 
-			border-radius: 30px; 
+			border: 2px solid #666262;
+			border-radius: 30px;
 			font-size: 1.2em;
 			color: #666262;
 			box-shadow: none;
@@ -424,13 +190,15 @@
 
 		.drag-area{
 		  border: 2px dashed #fff;
-		  height: 460px;
-		  width: 400px;
+		  height: 430px;
+		  width: 380px;
 		  border-radius: 35px;
 		  display: flex;
 		  align-items: center;
 		  justify-content: center;
 		  flex-direction: column;
+		  right: 80px;
+          top: -50px;
 		}
 		.drag-area.active{
 		  border: 2px solid #fff;
@@ -443,6 +211,7 @@
 		  font-size: 25px;
 		  font-weight: 600;
 		  color: #fff;
+		  text-align: center;
 		}
 
 		.login-header p{
@@ -470,7 +239,7 @@
 		  border-radius: 20px;
 		  cursor: pointer;
 		  transition: 0.5s;
-		  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); 
+		  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 		}
 
 		.drag-area button:hover {
@@ -507,163 +276,154 @@
         transition: 0.5s;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         z-index: 7; /* Increase z-index value */
-    }
+        }
 
-    .home-btn:hover {
-        background-color: #EED3D9;
-    }
+        .home-btn:hover {
+            background-color: #EED3D9;
+        }
 
+         .success-message {
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: green;
+                color: white;
+                padding: 10px 20px;
+                border-radius: 5px;
+                z-index: 9999;
+         }
 
-	</style>
+         .button-container {
+            display: flex;
+            justify-content: center;
+            margin-left: -900px;
+            margin-top: -200px;
+            gap: 40px;
+            z-index: 2; /* Add z-index to ensure buttons are above other elements */
+        }
+
+        .btn {
+		  width: 150px;
+		  background-color: #CCD3CA;
+		  border: 1px;
+		  text-align: center;
+		  outline: 2px;
+		  height: 49px;
+		  color: #666262;
+		  text-transform: uppercase;
+		  font-weight: 600;
+		  margin: 1rem 0;
+		  cursor: pointer;
+		  transition: 0.5s;
+		  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+		  border-radius: 20px;
+		  z-index: 2;
+
+		}
+
+		.btn:hover {
+		  background-color: #EED3D9;
+		}
+    </style>
 </head>
-
 <body>
     <div class="container">
-        <div class="forms-container">
-            <div class="signin-signup">
+        <h2 class="title">Create New User</h2>
+        <form class='form' id="userForm" enctype="multipart/form-data" method="POST" action="/add_user">
+            <div class="input-field">
+                <span class="fa fa-user"></span>
+                <label for="full-name">Name:</label>
+                <input type="text" id="full-name" name="full-name" placeholder="Enter Full Name" required />
+            </div>
+            <div class="input-field">
+                <span class="fa fa-envelope"></span>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Enter Your Email" required />
+            </div>
+
+            <div class="login-container">
                 <div class="login">
                     <div class="login-header">
-                        <p>Upload New User Picture</p>
+                        <p>Upload User Profile Picture</p>
                     </div>
                     <div class="drag-area">
                         <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
-                        <header>Drag & Drop to Upload File</header>
-                        <span>OR</span>
-                        <button onclick="openFile(event)">Browse File</button>
-                        <input type="file" name="file" hidden onchange="showFile()">
+                        <header>Click to Upload Profile Picture</header>
+                        <span></span>
+                        <button type="button" onclick="openFile()">Browse Picture</button>
+                        <input type="file" name="file" id="file" hidden onchange="showFile()">
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="panels-container">
-            <div class="panel left-panel">
-                <div class="content">
-                    <div class="heading-wrapper">
-                        <h3>Create New User</h3>
-                    </div>
-                    <div class="paragraph-wrapper">
-                        <form id="user-form" action="/add_user" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
-                            <div class="input-field">
-                                <span class="fa fa-user"></span>
-                                <label for="full-name">Name:</label>
-                                <input type="text" id="full-name" name="full-name" placeholder="Enter Full Name" required />
-                            </div>
-                            <div class="input-field">
-                                <span class="fa fa-envelope"></span>
-                                <label for="email">Email:</label>
-                                <input type="email" id="email" name="email" placeholder="Enter Your Email" required />
-                            </div>
-                            <div class="button-container">
-                                <input type="submit" value="Submit All" class="btn solid" />
-                                <input type="button" value="Clear All" class="btn solid" onclick="clearForm()" />
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="image-container-background">
-                    <!-- Removed image -->
-                </div>
+            <div class="button-container">
+                <button type="button" class="btn solid" onclick="validateAndSubmit()">Submit All</button>
+                <button type="button" class="btn solid" onclick="clearForm()">Clear All</button>
             </div>
+        </form>
+        <a href="/home" class="home-btn">Home Page</a>
+        <div id="successMessage" class="success-message" style="display: none;">
+            User Successfully added to the Database
         </div>
     </div>
-
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
     <script>
-        function clearForm() {
-            document.getElementById("user-form").reset();
-            // Reset the image display
-            let dropArea = document.querySelector(".drag-area");
-            dropArea.innerHTML = `
-                <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
-                <header>Drag & Drop to Upload File</header>
-                <span>OR</span>
-                <button onclick="openFile(event)">Browse File</button>
-                <input type="file" name="file" hidden onchange="showFile()">
-            `;
+        function openFile() {
+            document.getElementById("file").click();
         }
 
-        document.addEventListener("DOMContentLoaded", function() {
-            document.getElementById("user-form").addEventListener("submit", function(event) {
-                event.preventDefault(); // Prevent the default form submission behavior
-
-                var name = document.getElementById("full-name").value;
-                var email = document.getElementById("email").value;
-                var dropArea = document.querySelector(".drag-area");
-                var imgTag = dropArea.querySelector("img");
-
-                if (name === "" || email === "" || imgTag === null) {
-                    alert("All fields are required");
-                    return false; // Prevent form submission
-                }
-
-                // If all fields are filled, submit the form asynchronously
-                var formData = new FormData(document.getElementById("user-form"));
-
-                fetch("/add_user", {
-                    method: "POST",
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        alert(data.error);
-                    } else if (data.success) {
-                        alert(data.success);
-                        // Delay redirection to ensure the alert is seen
-                        setTimeout(() => {
-                            // Redirect to the active users page
-                            window.location.href = "/ActiveUsers";
-                        }, 1000); // Redirect after 1 second
-                    }
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                    // Handle error if needed
-                });
-            });
-        });
-
-
-
-        function openFile(event) {
-            event.preventDefault();
-            event.target.nextElementSibling.click();
+        function clearForm() {
+            document.getElementById("userForm").reset();
         }
 
         function showFile() {
-            let fileInput = document.querySelector("input[type='file']");
-            let file = fileInput.files[0];
-            let dropArea = document.querySelector(".drag-area");
+            var fileInput = document.getElementById("file");
+            var file = fileInput.files[0];
+            var dropArea = document.querySelector(".drag-area");
 
-            let fileType = file.type;
-            let validExtensions = ["image/jpeg", "image/jpg", "image/png"];
+            if (file) {
+                var fileType = file.type;
+                var validExtensions = ["image/jpeg", "image/jpg", "image/png"];
 
-            if (validExtensions.includes(fileType)) {
-                let fileReader = new FileReader();
-                fileReader.onload = () => {
-                    let fileURL = fileReader.result;
-                    let imgTag = `<img src="${fileURL}" alt="image">`;
-                    dropArea.innerHTML = imgTag;
+                if (validExtensions.includes(fileType)) {
+                    alert("You have selected Your Profile Picture");
+                } else {
+                    alert("This is not an Image File!");
+                    dropArea.innerHTML = `
+                        <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                        <header>Drag & Drop to Upload Picture</header>
+                        <span>OR</span>
+                        <button type="button" onclick="openFile()">Browse Picture</button>
+                        <input type="file" name="file" id="file" hidden onchange="showFile()">
+                    `;
                 }
-                fileReader.readAsDataURL(file);
-            } else {
-                alert("This is not an Image File!");
-                dropArea.innerHTML = `
-                    <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
-                    <header>Drag & Drop to Upload File</header>
-                    <span>OR</span>
-                    <button onclick="openFile(event)">Browse File</button>
-                    <input type="file" name="file" hidden onchange="showFile()">
-                `;
             }
         }
+
+        function validateAndSubmit() {
+            // Perform form validation
+            var fullName = document.getElementById("full-name").value;
+            var email = document.getElementById("email").value;
+            var fileInput = document.getElementById("file").value;
+
+            if (fullName.trim() === "" || email.trim() === "" || fileInput.trim() === "") {
+                alert("Please fill all fields and upload profile picture.");
+                return;
+            }
+
+            // If all fields are filled, submit the form
+            document.getElementById("userForm").submit();
+
+            // Display success message after form submission
+            document.getElementById("successMessage").style.display = "block";
+
+            // Redirect to ActiveUsers.html after a delay
+            setTimeout(function() {
+                // Add a cache-busting parameter to the URL
+                window.location.href = '/TrainingData';
+            }, 6500);
+        }
     </script>
-    <a href="/homepage" class="home-btn">Home Page</a>
+
 </body>
-
-
 </html>
-
-
-

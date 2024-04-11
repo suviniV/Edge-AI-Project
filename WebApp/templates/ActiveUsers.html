@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>Active Users</title>
     <style>
         * {
@@ -128,8 +129,6 @@
         .home-btn:hover {
           background-color: #EED3D9;
         }
-
-
     </style>
 </head>
 
@@ -138,7 +137,8 @@
     <div class="container">
         {% for user in users %}
         <div class="user-container" id="user-{{ loop.index }}">
-            <img src="{{ url_for('static', filename=user['pic_path']) }}" alt="{{ user['name'] }}">
+            <!-- Use user['pic_url'] directly instead of url_for -->
+            <img src="{{ user['pic_url'] }}" alt="{{ user['name'] }}">
             <div class="user-links">
                 <p><b>Name:</b> {{ user['name'] }}</p>
                 <p><b>Email:</b> {{ user['email'] }}</p>
@@ -149,29 +149,29 @@
     </div>
 
     <script>
+        <!-- Update the deleteUser function in the script -->
         function deleteUser(index) {
             // Confirm deletion
             if (confirm("Are you sure you want to delete this user?")) {
-                // Remove user from webpage
-                var userContainer = document.getElementById('user-' + index);
-                userContainer.parentNode.removeChild(userContainer);
-
-                // Send AJAX request to delete user from CSV file
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', '/deleteUser', true);
-                xhr.setRequestHeader('Content-Type', 'application/json');
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
-                        console.log(xhr.responseText);
+                // Send AJAX request to Flask endpoint to delete user
+                $.ajax({
+                    type: 'POST',
+                    url: '/deleteUser',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ index: index }),
+                    success: function (response) {
+                        window.location.href = '/ActiveUsers'; // Redirect to the updated page
+                        alert(response.success); // Show success message
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Error occurred while deleting user.'); // Show error message
                     }
-                };
-                var data = JSON.stringify({ index: index });
-                xhr.send(data);
+                });
             }
         }
+</script>
+
     </script>
-    <a href="/homepage" class="home-btn">Home Page</a>
-
+    <a href="/home" class="home-btn">Home Page</a>
 </body>
-
 </html>
