@@ -8,6 +8,8 @@ from picamera import PiCamera
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
+from gpiozero import MotionSensor, LightSensor, LED
+from signal import pause
 import time
 from gpiozero import LightSensor, LED
 from signal import pause
@@ -144,7 +146,7 @@ def send_email_alert(image):
     # Email configuration
     sender_email = 'akhabeer02@gmail.com'
     sender_app_password = 'ulcw soap fxyi wyhz'
-    receiver_email = 'sheffa58@gmail.com'
+    receiver_email = 'kabeer.20210888@iit.ac.lk'
     msg = MIMEMultipart()
     msg['From'] = sender_email
     msg['To'] = receiver_email
@@ -164,7 +166,7 @@ def send_email_alert(image):
     # Close the SMTP server connection
     server.quit()
 
-
+#
 def is_dark():
     """
     Function to determine if it's dark based on light sensor reading.
@@ -183,5 +185,36 @@ def turn_off_led():
 # When light is detected, turn off the LED
 light_sensor.when_dark = turn_on_led
 light_sensor.when_light = turn_off_led
+
+pause()  # Pause the script indefinitely to keep the program running
+
+
+# Define pin numbers
+motion_sensor_pin = 23  # GPIO pin for the motion sensor
+light_sensor_pin = 18   # GPIO pin for the light sensor
+led_pin = 17            # GPIO pin for the LED
+
+# Initialize motion sensor, light sensor, and LED
+motion_sensor = MotionSensor(motion_sensor_pin)
+light_sensor = LightSensor(light_sensor_pin)
+led = LED(led_pin)
+
+# Function to determine if it's dark based on light sensor reading
+def is_dark():
+    return light_sensor.value < 0.5  # Invert the logic to represent darkness
+
+# Function to turn on the LED
+def turn_on_led():
+    led.on()
+
+# Function to turn off the LED
+def turn_off_led():
+    led.off()
+
+# When motion is detected, check if it's dark and turn on the LED
+motion_sensor.when_motion = lambda: turn_on_led() if is_dark() else None
+
+# When motion stops, turn off the LED
+motion_sensor.when_no_motion = turn_off_led
 
 pause()  # Pause the script indefinitely to keep the program running
