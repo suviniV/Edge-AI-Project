@@ -265,12 +265,5 @@ def send_email_alert(image):
     server.quit()
 
 
-# Function to turn on the LED
-def turn_on_led():
-    led.on()
 
-
-# Function to turn off the LED
-def turn_off_led():
-    led.off()
 
