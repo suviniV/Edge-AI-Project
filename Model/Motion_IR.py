@@ -1,9 +1,16 @@
+import RPi.GPIO as GPIO
+import time
+import subprocess
+
+motion_pin = 26
+IR_PIN = 15
 GPIO.setup(motion_pin, GPIO.IN)
 GPIO.setup(ir_pin, GPIO.IN)
+GPIO.setmode(GPIO.BCM)
 
 # Define the path to the Python files you want to run
-lightsent_script = "lightsensor.py"
-face_recognition_script = "alert.py"
+ir_script = "Model/ir_sensor.py"
+face_recognition_script = "Model/functions.py"
 
 # Flag to track if motion is detected
 motion_detected = False
@@ -16,7 +23,7 @@ try:
             print("Motion detected!")
             motion_detected = True
             # Run lightsent.py
-            subprocess.run(["python3", lightsent_script])
+            subprocess.run(["python3", ir_script])
         # Check if motion is detected and IR is detected
         if motion_detected and GPIO.input(ir_pin):
             print("IR detected after motion!")
@@ -29,4 +36,5 @@ try:
 except KeyboardInterrupt:
     print("Exiting...")
 finally:
-# Clean up GPIO
+    # Clean up GPIO
+    GPIO.cleanup()
