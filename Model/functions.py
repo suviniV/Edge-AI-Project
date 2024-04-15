@@ -8,9 +8,8 @@ from picamera import PiCamera
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
-from gpiozero import MotionSensor
-from signal import pause
 import time
+from azure.storage.blob import generate_container_sas, ContainerSasPermissions, BlobServiceClient
 
 
 # Face detection function using haar cascade model
@@ -182,6 +181,28 @@ def capturing_training_images():
         print("Error in capturing training images:", e)
 
 
+def download_images_from_azure_storage(local_folder_path, container_name):
+    account_name = "smartlocktrainingimages"
+    account_key = "kwpvrBsa5FRw9z95H4O2Ov0fyWQBgdig/S8+I4YZIY8iChizBeHvX0SS2C4wqbr6CpHR96uU7ypu+AStV7xGUg=="
+
+    # Create a BlobServiceClient object
+    blob_service_client = BlobServiceClient(account_url=f"https://{account_name}.blob.core.windows.net/",
+                                            credential=account_key)
+
+    # Get a container client
+    container_client = blob_service_client.get_container_client(container=container_name)
+    # List blobs in the container
+    blob_list = container_client.list_blobs()
+
+    # Download each blob (image) to the local folder
+    for blob in blob_list:
+        blob_client = container_client.get_blob_client(blob.name)
+        local_file_path = f"{local_folder_path}/{blob.name}"
+        with open(local_file_path, "wb") as local_file:
+            blob_data = blob_client.download_blob()
+            local_file.write(blob_data.readall())
+
+
 # Main function which calls the functions required for the facial_recognition
 def main_function():
     """
@@ -265,12 +286,5 @@ def send_email_alert(image):
     server.quit()
 
 
-# Function to turn on the LED
-def turn_on_led():
-    led.on()
 
-
-# Function to turn off the LED
-def turn_off_led():
-    led.off()
 

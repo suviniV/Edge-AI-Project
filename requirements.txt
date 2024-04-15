@@ -1,7 +1,9 @@
-numpy
+numpy~=1.21.6
 cV2
-gpiozero
+gpiozero~=2.0
 smtplib
 signal
 gpio
 pandas
+Flask~=2.2.5
+requests~=2.31.0
