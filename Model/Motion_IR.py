@@ -2,10 +2,11 @@ import RPi.GPIO as GPIO
 import time
 import subprocess
 
+GPIO.setmode(GPIO.BCM)
 motion_pin = 26
 IR_PIN = 15
 GPIO.setup(motion_pin, GPIO.IN)
-GPIO.setup(ir_pin, GPIO.IN)
+GPIO.setup(IR_PIN, GPIO.IN)
 GPIO.setmode(GPIO.BCM)
 
 # Define the path to the Python files you want to run
@@ -25,7 +26,7 @@ try:
             # Run lightsent.py
             subprocess.run(["python3", ir_script])
         # Check if motion is detected and IR is detected
-        if motion_detected and GPIO.input(ir_pin):
+        if motion_detected and GPIO.input(IR_PIN):
             print("IR detected after motion!")
             # Run faceRecognition.py
             subprocess.run(["python3", face_recognition_script])

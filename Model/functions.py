@@ -2,7 +2,7 @@
 import csv
 from datetime import datetime
 from io import StringIO
-from random import random
+import random
 import cv2
 import os
 import numpy as np
@@ -14,6 +14,7 @@ from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 import time
 from azure.storage.blob import generate_container_sas, ContainerSasPermissions, BlobServiceClient
+import sys
 
 
 # Face detection function using haar cascade model
@@ -243,7 +244,6 @@ def send_email_alert(image):
 
 # Function to upload the image of the intruder to the cloud
 def upload_unknown_image(image, counter):
-
     """
     Upload the intruder image to Azure Blob Storage.
 
@@ -262,7 +262,7 @@ def upload_unknown_image(image, counter):
 
     # Upload the image
     blob_client = container_client.get_blob_client(f"Id{counter}.jpg")
-    blob_client.upload_blob(image.read(), overwrite=True)
+    blob_client.upload_blob(image, overwrite=True)
 
 
 # Function to upload the log of the intruder to the cloud
@@ -395,18 +395,19 @@ def main_function():
         face_recognizer = cv2.face.LBPHFaceRecognizer_create()
         face_recognizer.read('trainingData.yml')
 
-        name = {0: "Ashken", 1: "Suvini", 2: "Abdul"}
+        name = {0: "Ashken", 1: "Suvini", 2: "Abdul Khabeer"}
 
         # Initializing the PiCamera
         camera = PiCamera()
         camera.resolution = (640, 480)
-        camera.frame_rate = 32
+        camera.framerate = 32
         raw_capture = PiRGBArray(camera, size=(640, 480))
         time.sleep(0.1)
 
         unknown_detected = False
         unknown_start_time = None
 
+        start_time = time.time()
         # Loop to continuously capture frames from the camera
         for frame in camera.capture_continuous(raw_capture, format="bgr", use_video_port=True):
             # Extract the captured frame as a numpy array
@@ -429,13 +430,18 @@ def main_function():
                 print("label:", label)
                 draw_rect(test_img, face)
                 predicted_name = name[label]
-                if confidence < 39:  # If confidence less than 37 then don't print predicted face text on screen
+                if confidence < 60:  # If confidence less than 37 then don't print predicted face text on screen
                     put_text(test_img, predicted_name, x, y)
-                    write_access_logs(name=predicted_name, date=datetime.now())
+                    if time.time() - start_time > 12:
+                        write_access_logs(name=predicted_name, date=datetime.now())
+                        door_status_action(new_status="unlocked")
+                        sys.exit(0)
+
                 else:
                     # Deviations: Handling unrecognized faces
                     put_text(test_img, "Unknown", x, y)
                     unknown_face_detected = True
+
             if unknown_face_detected:
                 if not unknown_detected:
                     unknown_start_time = time.time()
@@ -447,7 +453,6 @@ def main_function():
                     Id = random.randint(100000, 999999)
                     upload_unknown_image(cv2.imencode('.jpg', test_img)[1].tobytes(), Id)
                     write_unauthorized_access(Id=Id, date=datetime.now())
-                    door_status_action(new_status="unlocked")
                     break  # Terminate the program
             else:
                 unknown_detected = False
