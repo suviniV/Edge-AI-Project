@@ -1,4 +1,8 @@
 # Importing Necessary Libraries
+import csv
+from datetime import datetime
+from io import StringIO
+from random import random
 import cv2
 import os
 import numpy as np
@@ -202,6 +206,7 @@ def download_images_from_azure_storage(local_folder_path, container_name):
             blob_data = blob_client.download_blob()
             local_file.write(blob_data.readall())
 
+
 # Function to send email alert when intruder is detected
 def send_email_alert(image):
     # Email configuration
@@ -226,6 +231,149 @@ def send_email_alert(image):
     server.sendmail(sender_email, receiver_email, msg.as_string())
     # Close the SMTP server connection
     server.quit()
+
+
+# Function to upload the image of the intruder to the cloud
+def upload_unknown_image(image, counter):
+
+    """
+    Upload the intruder image to Azure Blob Storage.
+
+    :param image: The image to upload.
+    :param counter: The counter value used in the image filename.
+    :return: None
+    """
+    # Connect to Azure Blob Storage
+    blob_service_client = BlobServiceClient.from_connection_string(
+        "DefaultEndpointsProtocol=https;AccountName=databasecw;AccountKey="
+        "tor4V06NY6XHesq2z9vAZ55l3IWWTv9JpL1KT9S4CahV+e2+b9eh4nMy+cZlnpc6EW1WsYHh489/+AStZimtVQ==;EndpointSuffix="
+        "core.windows.net")
+
+    # Get the container client
+    container_client = blob_service_client.get_container_client("unauthorizedaccesspics")
+
+    # Upload the image
+    blob_client = container_client.get_blob_client(f"Id{counter}.jpg")
+    blob_client.upload_blob(image.read(), overwrite=True)
+
+
+# Function to upload the log of the intruder to the cloud
+def write_unauthorized_access(Id, date):
+    """
+    Writes unauthorized access logs to a CSV file in Azure Blob Storage.
+
+    :param Id: The ID of the intruder.
+    :param date: The timestamp of the unauthorized access event.
+    :return: None
+    """
+
+    unauthorized_access_logs = []
+
+    # Connect to Azure Blob Storage
+    blob_service_client = BlobServiceClient.from_connection_string(
+        "DefaultEndpointsProtocol=https;AccountName=databasecw;AccountKey"
+        "=tor4V06NY6XHesq2z9vAZ55l3IWWTv9JpL1KT9S4CahV+e2+b9eh4nMy+cZlnpc6EW1WsYHh489/+AStZimtVQ==;EndpointSuffix"
+        "=core.windows.net")
+
+    # Get the container client
+    container_client = blob_service_client.get_container_client("unauthorizedaccesslogs")
+    blob_client = container_client.get_blob_client("unauthorizedAccess.csv")
+    blob_data = blob_client.download_blob()
+    csv_content = blob_data.content_as_text()
+
+    # Read existing logs
+    reader = csv.DictReader(csv_content.splitlines())
+    for row in reader:
+        unauthorized_access_logs.append(row)
+
+    # Append new log with given Id and date
+    new_log = {'id': f"Id{Id}", 'time': date.strftime('%Y-%m-%d %H:%M:%S')}
+    unauthorized_access_logs.append(new_log)
+
+    # Convert logs to CSV format
+    csv_buffer = StringIO()
+    writer = csv.DictWriter(csv_buffer, fieldnames=['id', 'time'])
+    writer.writeheader()
+    writer.writerows(unauthorized_access_logs)
+    csv_content_updated = csv_buffer.getvalue()
+
+    # Upload updated logs back to the cloud
+    blob_client.upload_blob(csv_content_updated, overwrite=True)
+
+
+# Function to upload the access logs to the cloud
+def write_access_logs(name, date):
+    """
+    Writes access logs to a CSV file in Azure Blob Storage.
+
+    :param name: The name of the user who accessed.
+    :param date: The timestamp of the access event.
+    :return: None
+    """
+
+    unauthorized_access_logs = []
+
+    # Connect to Azure Blob Storage
+    blob_service_client = BlobServiceClient.from_connection_string(
+        "DefaultEndpointsProtocol=https;AccountName=databasecw;AccountKey"
+        "=tor4V06NY6XHesq2z9vAZ55l3IWWTv9JpL1KT9S4CahV+e2+b9eh4nMy+cZlnpc6EW1WsYHh489/+AStZimtVQ==;EndpointSuffix"
+        "=core.windows.net")
+
+    container_client = blob_service_client.get_container_client("accesslogs")
+    blob_client = container_client.get_blob_client("accessLogs.csv")
+    blob_data = blob_client.download_blob()
+    csv_content = blob_data.content_as_text()
+
+    # Read existing logs
+    reader = csv.DictReader(csv_content.splitlines())
+    for row in reader:
+        unauthorized_access_logs.append(row)
+
+    # Append new log with given Id and date
+    new_log = {'name': name, 'time': date.strftime('%Y-%m-%d %H:%M:%S')}
+    unauthorized_access_logs.append(new_log)
+
+    # Convert logs to CSV format
+    csv_buffer = StringIO()
+    writer = csv.DictWriter(csv_buffer, fieldnames=['name', 'time'])
+    writer.writeheader()
+    writer.writerows(unauthorized_access_logs)
+    csv_content_updated = csv_buffer.getvalue()
+
+    # Upload updated logs back to the cloud
+    blob_client.upload_blob(csv_content_updated, overwrite=True)
+
+
+# Function to update the door lock status
+def door_status_action(new_status):
+    """
+    Updates the door status in a CSV file stored in Azure Blob Storage.
+
+    :param new_status: The new status of the door ("locked" or "unlocked").
+    :return: None
+    """
+
+    # Azure Blob Storage connection string
+    connection_string = "DefaultEndpointsProtocol=https;AccountName=databasecw;AccountKey=" \
+                        "tor4V06NY6XHesq2z9vAZ55l3IWWTv9JpL1KT9S4CahV+e2+b9eh4nMy+cZlnpc6EW1WsYHh489/+AStZimtVQ==" \
+                        ";EndpointSuffix=core.windows.net"
+
+    # Connect to Blob Storage
+    blob_service_client = BlobServiceClient.from_connection_string(connection_string)
+
+    # Prepare CSV content with new status
+    csv_content_updated = f"{new_status}\n"
+
+    # Upload updated status back to the cloud
+    container_client = blob_service_client.get_container_client("doorlockstatus")
+    blob_client = container_client.get_blob_client("doorStatus.csv")
+    blob_client.upload_blob(csv_content_updated, overwrite=True)
+
+    # Schedule updating status to "locked" after 30 seconds
+    if new_status == "unlocked":
+        time.sleep(30)
+        door_status_action(new_status="locked")
+
 
 # Main function which calls the functions required for the facial_recognition
 def main_function():
@@ -275,11 +423,11 @@ def main_function():
                 predicted_name = name[label]
                 if confidence < 39:  # If confidence less than 37 then don't print predicted face text on screen
                     put_text(test_img, predicted_name, x, y)
+                    write_access_logs(name=predicted_name, date=datetime.now())
                 else:
                     # Deviations: Handling unrecognized faces
                     put_text(test_img, "Unknown", x, y)
                     unknown_face_detected = True
-
             if unknown_face_detected:
                 if not unknown_detected:
                     unknown_start_time = time.time()
@@ -287,6 +435,11 @@ def main_function():
                 elif time.time() - unknown_start_time > 20:
                     # Sending email alert for unauthorized access
                     send_email_alert(cv2.imencode('.jpg', test_img)[1].tobytes())
+                    # Updating the cloud database
+                    Id = random.randint(100000, 999999)
+                    upload_unknown_image(cv2.imencode('.jpg', test_img)[1].tobytes(), Id)
+                    write_unauthorized_access(Id=Id, date=datetime.now())
+                    door_status_action(new_status="unlocked")
                     break  # Terminate the program
             else:
                 unknown_detected = False
@@ -301,9 +454,6 @@ def main_function():
     except Exception as e:
         print("Error in main function:", e)
 
+
+# Calling the main function
 main_function()
-
-
-
-
-
