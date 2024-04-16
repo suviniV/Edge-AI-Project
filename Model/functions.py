@@ -131,10 +131,10 @@ def put_text(test_img, text, x, y):
         print("Error in putting text:", e)
 
 
-# Function to save the training images into a yml file
-def save_training_images_to_yml(training_images_path, output_file_path):
+# Function to save the trained model into a yml file
+def images_to_yml_and_training(training_images_path, output_file_path):
     """
-        Save the training images into a YAML file.
+        Save the trained model into a YAML file.
 
         :param training_images_path: The path to the directory containing the training images.
         :param output_file_path: The path to save the output YAML file.
@@ -181,7 +181,15 @@ def capturing_training_images():
         print("Error in capturing training images:", e)
 
 
+# Function to download new user from azure containers
 def download_images_from_azure_storage(local_folder_path, container_name):
+    """
+    Downloading the new user data from azure cloud to train the model again
+
+    :param local_folder_path:
+    :param container_name:
+    :return:
+    """
     account_name = "smartlocktrainingimages"
     account_key = "kwpvrBsa5FRw9z95H4O2Ov0fyWQBgdig/S8+I4YZIY8iChizBeHvX0SS2C4wqbr6CpHR96uU7ypu+AStV7xGUg=="
 
@@ -211,11 +219,11 @@ def main_function():
         :return: None
     """
     try:
-        # Load saved training data
+        # Load saved trained model
         face_recognizer = cv2.face.LBPHFaceRecognizer_create()
         face_recognizer.read('trainingData.yml')
 
-        name = {0: "Kavindya", 1: "Ashken", 2: "Abdul"}
+        name = {0: "Suvini", 1: "Ashken"}
 
         # Initializing the PiCamera
         camera = PiCamera()
