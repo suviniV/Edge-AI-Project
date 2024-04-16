@@ -394,28 +394,26 @@
     </div>
 </div>
     <script>
-
         function openCamera() {
-    // Delayed display of the message
-    setTimeout(function() {
-        // Display message indicating images are being stored
-        document.getElementById('successMessage').style.display = 'block';
+            // Delayed display of the message
+            setTimeout(function() {
+                // Display message indicating images are being stored
+                document.getElementById('successMessage').style.display = 'block';
 
-        // Send a request to Flask backend to start capturing images
-        fetch('/start_capturing_images')
-            .then(response => {
-                if (response.ok) {
-                    // Redirect to ActiveUsers after successful response
-                    window.location.href = '/ActiveUsers';
-                } else {
-                    console.error('Failed to start capture');
-                }
-            })
-            .catch(error => console.error('Error:', error));
-    }, 10000); // 10 seconds delay
-}
-
+                // Send a request to Flask backend to start capturing images
+                fetch('/start_capturing_images')
+                    .then(response => {
+                        if (response.ok) {
+                            // Redirect to ActiveUsers after successful response
+                            window.location.href = '/ActiveUsers';
+                            fetch('/trigger_training', { method: 'POST' });
+                        } else {
+                            console.error('Failed to start capture');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }, 10000); // 10 seconds delay
+        }
     </script>
-
 </body>
 </html>
