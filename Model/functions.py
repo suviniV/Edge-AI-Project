@@ -223,7 +223,7 @@ def main_function():
         face_recognizer = cv2.face.LBPHFaceRecognizer_create()
         face_recognizer.read('trainingData.yml')
 
-        name = {0: "Ashken", 1: "Suvini", 2: "Abdul"}
+        name = {0: "Suvini Viduneth", 1: "Abdul Khabeer"}
 
         # Initializing the PiCamera
         camera = PiCamera()
