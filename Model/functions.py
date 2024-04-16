@@ -210,64 +210,6 @@ def download_images_from_azure_storage(local_folder_path, container_name):
             blob_data = blob_client.download_blob()
             local_file.write(blob_data.readall())
 
-
-# Main function which calls the functions required for the facial_recognition
-def main_function():
-    """
-        Main function for facial recognition.
-
-        :return: None
-    """
-    try:
-        # Load saved trained model
-        face_recognizer = cv2.face.LBPHFaceRecognizer_create()
-        face_recognizer.read('trainingData.yml')
-
-        name = {0: "Suvini Viduneth", 1: "Abdul Khabeer"}
-
-        # Initializing the PiCamera
-        camera = PiCamera()
-        camera.resolution = (640, 480)
-        camera.frame_rate = 32
-        raw_capture = PiRGBArray(camera, size=(640, 480))
-        time.sleep(0.1)
-        # Loop to continuously capture frames from the camera
-        for frame in camera.capture_continuous(raw_capture, format="bgr", use_video_port=True):
-            # Extract the captured frame as a numpy array
-            test_img = frame.array
-            # Detect faces in the captured frame
-            faces_detected, gray_img = face_detection(test_img)
-            # Draw rectangles around the detected faces
-            for (x, y, w, h) in faces_detected:
-                draw_rect(test_img, (x, y, w, h))
-            # Loop through each detected face
-            for face in faces_detected:
-                # Extract the coordinates and dimensions of the detected face
-                (x, y, w, h) = face
-                # Extract the region of interest (ROI) in grayscale from the captured frame
-                roi_gray = gray_img[y:y + w, x:x + h]
-                label, confidence = face_recognizer.predict(roi_gray)  # predicting the label of given image
-                print("confidence:", confidence)
-                print("label:", label)
-                draw_rect(test_img, face)
-                predicted_name = name[label]
-                if confidence < 39:  # If confidence less than 37 then don't print predicted face text on screen
-                    put_text(test_img, predicted_name, x, y)
-                else:
-                    # Deviations: Handling unrecognized faces
-                    put_text(test_img, "Unknown", x, y)
-
-            cv2.imshow('face recognition', test_img)
-            raw_capture.truncate(0)
-            # wait until 'q' key is pressed to terminate
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
-
-        cv2.destroyAllWindows()
-    except Exception as e:
-        print("Error in main function:", e)
-
-
 # Function to send email alert when intruder is detected
 def send_email_alert(image):
     # Email configuration
@@ -292,6 +234,83 @@ def send_email_alert(image):
     server.sendmail(sender_email, receiver_email, msg.as_string())
     # Close the SMTP server connection
     server.quit()
+
+# Main function which calls the functions required for the facial_recognition
+def main_function():
+    """
+        Main function for facial recognition.
+
+        :return: None
+    """
+    try:
+        # Load saved trained model
+        face_recognizer = cv2.face.LBPHFaceRecognizer_create()
+        face_recognizer.read('trainingData.yml')
+
+        name = {0: "Ashken", 1: "Suvini", 2: "Abdul"}
+
+        # Initializing the PiCamera
+        camera = PiCamera()
+        camera.resolution = (640, 480)
+        camera.frame_rate = 32
+        raw_capture = PiRGBArray(camera, size=(640, 480))
+        time.sleep(0.1)
+
+        unknown_detected = False
+        unknown_start_time = None
+
+        # Loop to continuously capture frames from the camera
+        for frame in camera.capture_continuous(raw_capture, format="bgr", use_video_port=True):
+            # Extract the captured frame as a numpy array
+            test_img = frame.array
+            # Detect faces in the captured frame
+            faces_detected, gray_img = face_detection(test_img)
+            # Draw rectangles around the detected faces
+            for (x, y, w, h) in faces_detected:
+                draw_rect(test_img, (x, y, w, h))
+
+            unknown_face_detected = False
+            # Loop through each detected face
+            for face in faces_detected:
+                # Extract the coordinates and dimensions of the detected face
+                (x, y, w, h) = face
+                # Extract the region of interest (ROI) in grayscale from the captured frame
+                roi_gray = gray_img[y:y + w, x:x + h]
+                label, confidence = face_recognizer.predict(roi_gray)  # predicting the label of given image
+                print("confidence:", confidence)
+                print("label:", label)
+                draw_rect(test_img, face)
+                predicted_name = name[label]
+                if confidence < 39:  # If confidence less than 37 then don't print predicted face text on screen
+                    put_text(test_img, predicted_name, x, y)
+                else:
+                    # Deviations: Handling unrecognized faces
+                    put_text(test_img, "Unknown", x, y)
+                    unknown_face_detected = True
+
+            if unknown_face_detected:
+                if not unknown_detected:
+                    unknown_start_time = time.time()
+                    unknown_detected = True
+                elif time.time() - unknown_start_time > 20:
+                    # Sending email alert for unauthorized access
+                    send_email_alert(cv2.imencode('.jpg', test_img)[1].tobytes())
+                    break  # Terminate the program
+            else:
+                unknown_detected = False
+
+            cv2.imshow('face recognition', test_img)
+            raw_capture.truncate(0)
+            # wait until 'q' key is pressed to terminate
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+
+        cv2.destroyAllWindows()
+    except Exception as e:
+        print("Error in main function:", e)
+
+main_function()
+
 
 
 
