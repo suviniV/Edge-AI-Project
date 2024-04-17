@@ -362,7 +362,7 @@ def AccessLogs():
     # Add picture URLs to access logs
     for user in logs:
         user_name = user["name"]
-        user['pic_url'] = f"https://{account_name}.blob.core.windows.net/{container_name}/{user_name}.png?{container_sas_token}"
+        user['pic_url'] = f"https://{account_name}.blob.core.windows.net/{container_name}/{user_name}.jpg?{container_sas_token}"
 
     # Render the template with access logs
     return render_template("AccessLogs.html", logs=logs)
