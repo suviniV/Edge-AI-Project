@@ -10,6 +10,7 @@ The aim of our project is to address the shortcomings of traditional door lock s
 
 ### Hardware Used
 - Raspberry Pi 3
+- Pi Camera
 - IR Sensor
 - Motion Sensor
 - LED, Resistor
