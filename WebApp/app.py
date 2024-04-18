@@ -3,10 +3,11 @@ import csv
 import time
 import io
 from datetime import datetime, timedelta
-# from Model.functions import capturing_training_images
-# from new_user_training import func
+import sys
 from azure.storage.blob import generate_container_sas, ContainerSasPermissions, BlobServiceClient
 
+sys.path.append('../Model')
+from functions import capturing_training_images
 
 app = Flask(__name__, static_folder='static')
 
@@ -231,13 +232,6 @@ def delete_user_route():
         return jsonify(response)
     except Exception as e:
         return jsonify({'error': str(e)})
-
-
-@app.route('/trigger_training', methods=['POST'])
-def trigger_function():
-    # Call the function in another file here
-    func()
-    return 'Function triggered successfully'
 
 
 @app.route('/')

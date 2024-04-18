@@ -406,7 +406,6 @@
                         if (response.ok) {
                             // Redirect to ActiveUsers after successful response
                             window.location.href = '/ActiveUsers';
-                            fetch('/trigger_training', { method: 'POST' });
                         } else {
                             console.error('Failed to start capture');
                         }

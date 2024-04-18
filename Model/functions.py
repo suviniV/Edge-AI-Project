@@ -13,7 +13,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 import time
-from azure.storage.blob import generate_container_sas, ContainerSasPermissions, BlobServiceClient
+from azure.storage.blob import BlobServiceClient
 import sys
 
 
@@ -191,9 +191,8 @@ def download_images_from_azure_storage(local_folder_path, container_name):
     """
     Downloading the new user data from azure cloud to train the model again
 
-    :param local_folder_path:
-    :param container_name:
-    :return:
+    :param local_folder_path: The local folder path where the images will be downloaded
+    :param container_name: The name of the Azure storage container
     """
     account_name = "smartlocktrainingimages"
     account_key = "kwpvrBsa5FRw9z95H4O2Ov0fyWQBgdig/S8+I4YZIY8iChizBeHvX0SS2C4wqbr6CpHR96uU7ypu+AStV7xGUg=="
@@ -207,10 +206,14 @@ def download_images_from_azure_storage(local_folder_path, container_name):
     # List blobs in the container
     blob_list = container_client.list_blobs()
 
+    # Create the local folder if it doesn't exist
+    if not os.path.exists(local_folder_path):
+        os.makedirs(local_folder_path)
+
     # Download each blob (image) to the local folder
     for blob in blob_list:
         blob_client = container_client.get_blob_client(blob.name)
-        local_file_path = f"{local_folder_path}/{blob.name}"
+        local_file_path = os.path.join(local_folder_path, blob.name)
         with open(local_file_path, "wb") as local_file:
             blob_data = blob_client.download_blob()
             local_file.write(blob_data.readall())
@@ -393,7 +396,7 @@ def main_function():
     try:
         # Load saved trained model
         face_recognizer = cv2.face.LBPHFaceRecognizer_create()
-        face_recognizer.read('trainingData.yml')
+        face_recognizer.read('trainingImages.yml')
 
         name = {0: "Suvini Viduneth", 1: "Abdul Khabeer"}
 
@@ -430,13 +433,12 @@ def main_function():
                 print("label:", label)
                 draw_rect(test_img, face)
                 predicted_name = name[label]
-                if confidence < 60:  # If confidence less than 37 then don't print predicted face text on screen
+                if confidence < 39:  # If confidence less than 39 then don't print predicted face text on screen
                     put_text(test_img, predicted_name, x, y)
                     if time.time() - start_time > 12:
                         write_access_logs(name=predicted_name, date=datetime.now())
                         door_status_action(new_status="unlocked")
                         sys.exit(0)
-
                 else:
                     # Deviations: Handling unrecognized faces
                     put_text(test_img, "Unknown", x, y)
