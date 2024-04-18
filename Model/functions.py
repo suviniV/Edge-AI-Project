@@ -5,6 +5,8 @@ from io import StringIO
 import random
 import cv2
 import os
+
+import gpiozero
 import numpy as np
 import smtplib
 from picamera.array import PiRGBArray
@@ -385,6 +387,20 @@ def door_status_action(new_status):
         time.sleep(30)
         door_status_action(new_status="locked")
 
+led = gpiozero.LED(17)
+stat = False
+
+def LED():
+
+    global  stat
+    led.on()
+    led_status = True
+
+def LED_OFF():
+
+    global stat
+    led.on()
+    led_status = False
 
 # Main function which calls the functions required for the facial_recognition
 def main_function():
@@ -394,6 +410,8 @@ def main_function():
         :return: None
     """
     try:
+        LED()
+        print("LED Turned on")
         # Load saved trained model
         face_recognizer = cv2.face.LBPHFaceRecognizer_create()
         face_recognizer.read('trainingImages.yml')
@@ -439,6 +457,7 @@ def main_function():
                         write_access_logs(name=predicted_name, date=datetime.now())
                         door_status_action(new_status="unlocked")
                         sys.exit(0)
+                        LED_OFF()
                 else:
                     # Deviations: Handling unrecognized faces
                     put_text(test_img, "Unknown", x, y)
@@ -455,6 +474,7 @@ def main_function():
                     Id = random.randint(100000, 999999)
                     upload_unknown_image(cv2.imencode('.jpg', test_img)[1].tobytes(), Id)
                     write_unauthorized_access(Id=Id, date=datetime.now())
+                    LED_OFF()
                     break  # Terminate the program
             else:
                 unknown_detected = False
