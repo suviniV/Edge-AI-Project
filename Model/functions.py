@@ -1,6 +1,8 @@
 # Importing Necessary Libraries
 import cv2
 import os
+
+import gpiozero
 import numpy as np
 import smtplib
 from picamera.array import PiRGBArray
@@ -181,6 +183,20 @@ def capturing_training_images():
     except Exception as e:
         print("Error in capturing training images:", e)
 
+led = gpiozero.LED
+stat = False
+
+def LED():
+
+    global stat
+    led.on()
+    led_status = True
+
+def LED_OFF():
+
+    global stat
+    led.off()
+    led_status = False
 
 # Main function which calls the functions required for the facial_recognition
 def main_function():
@@ -190,6 +206,8 @@ def main_function():
         :return: None
     """
     try:
+        LED()
+        print("LED Turned on")
         # Load saved training data
         face_recognizer = cv2.face.LBPHFaceRecognizer_create()
         face_recognizer.read('trainingData.yml')
